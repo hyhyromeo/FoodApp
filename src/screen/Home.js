@@ -1,8 +1,9 @@
 import { StatusBar } from 'expo-status-bar';
-import React, {useState} from 'react';
-import { StyleSheet, View, Text, FlatList, ScrollView, Dimensions, Image } from 'react-native';
+import React, {useState, useEffect} from 'react';
+import { StyleSheet, View, Text, FlatList, ScrollView, Dimensions, Image, TouchableOpacity, } from 'react-native';
 import Card from '../component/Card';
 import Header from '../component/Header';
+import Map from '../screen/Map';
 
 const ads = [
     'https://cdn.pixabay.com/photo/2022/01/03/01/57/airport-6911566_960_720.jpg',
@@ -13,20 +14,27 @@ const ads = [
 const deviceWidth = Dimensions.get("window").width;
 const deviceHeight = Dimensions.get("window").height;
 
-const Home = () => {
+const Home = ({navigation}) => {
     const [imgActive, setimgActive] = useState(0);
     onchange = (nativeEvent) => {
         if(nativeEvent){
-            const slide = Math.ceil(nativeEvent.contentOffset.x / nativeEvent.contentOffset.width);
+            console.log("nativeEvent:", nativeEvent);
+
+            const slide = Math.ceil(nativeEvent.contentOffset.x / nativeEvent.layoutMeasurement.width);
+            console.log("slide:", slide);
+
             if(slide != imgActive) {
                 setimgActive(slide);
             }
         }
     }
+    useEffect(() => {
+    console.log("imgActive:", imgActive);
+    }, [imgActive])
 
     return (
         <View style={styles.container}>
-            <Header text="Perry Jeh"/>
+            {/* <Header text="Perry Jeh" /> */}
             <StatusBar style="auto" />
             <View style={styles.wrapper}>
                 <ScrollView
@@ -51,14 +59,22 @@ const Home = () => {
                     {
                         ads.map((e, index) => 
                             <Text
-                                key={e}
-                                style={imgActive == index ? styles.dotActive: styles.dot}
+                                key={index}
+                                style={imgActive === index ? styles.dotActive: styles.dot}
                             >
                                 ●
                             </Text>
                         )
                     }
                 </View>
+            </View>
+            <View style={styles.buttonWrap}>
+                <TouchableOpacity  style={styles.button} onPress={() => navigation.navigate('Map')}>
+                    <Image
+                        style={{width:'100%', height:'100%', borderRadius:25}}
+                        source={require('../../assets/icon.png')}
+                    />
+                </TouchableOpacity>
             </View>
             <FlatList 
                 data={allItems} 
@@ -600,7 +616,7 @@ const styles = StyleSheet.create({
     },
     dotActive: {
         margin: 3,
-        color: 'white'
+        color: 'black'
     },
     dot: {
         margin: 3,
@@ -628,6 +644,18 @@ const styles = StyleSheet.create({
         color: '#fff',
         fontSize: 30,
         fontWeight: 'bold'
+    },
+    buttonWrap: {
+        flexDirection: 'row'
+    },
+    button: {
+        alignItems: 'center',
+        width: deviceWidth * 0.4,
+        height: deviceHeight * 0.25,
+        margin: 10,
+        justifyContent: 'center',
+        borderRadius: 25,
+        backgroundColor: 'red'
     }
 });
 

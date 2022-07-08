@@ -1,18 +1,57 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
-import { NavigationContainer } from '@react-navigation/bottom-tabs';
+import { StyleSheet, Text, View, Image } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import Home from './src/screen/Home';
 import Map from './src/screen/Map';
-import Tabs from './src/nav/Tabs';
+
+const Stack = createNativeStackNavigator();
+
+function LogoTitle() {
+  return(
+    <View style={styles.header}>
+      <Image
+        style={{ width: 30, height: 30}}
+        source={require('./assets/icon.png')}
+      />
+      <Text style={{marginLeft:5}}>
+        Logo
+      </Text>
+    </View>
+    
+
+  );
+}
+
+const StackNavigator = (
+  <Stack.Navigator>
+    <Stack.Screen
+      name="Home"
+      component={Home}
+      options={{
+        headerTitle: (props) => <LogoTitle {...props} />,
+        headerStyle: {
+          // backgroundColor: '#f4511e',
+          // padding:100
+
+        }
+      }
+    
+    }
+    />
+    <Stack.Screen
+      name="Map"
+      component={Map}
+    />
+  </Stack.Navigator>
+);
 
 export default function App() {
   return (
-    // <NavigationContainer>
-    //   <Tabs/>
-    // </NavigationContainer>
-    <Home/>
+    <NavigationContainer>
+      {StackNavigator}
+    </NavigationContainer>
   );
 }
 
@@ -23,4 +62,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  header: {
+    display:"flex",
+    flexDirection: 'row',
+    alignItems:'center'
+  }
 });
