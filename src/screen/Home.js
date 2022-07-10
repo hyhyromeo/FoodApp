@@ -5,6 +5,8 @@ import Card from '../component/Card';
 import Header from '../component/Header';
 import Map from '../screen/Map';
 
+import * as Location from 'expo-location';
+
 const ads = [
     'https://cdn.pixabay.com/photo/2022/01/03/01/57/airport-6911566_960_720.jpg',
     'https://cdn.pixabay.com/photo/2017/03/23/09/34/artificial-intelligence-2167835_960_720.jpg',
@@ -28,9 +30,33 @@ const Home = ({navigation}) => {
             }
         }
     }
+
+    // useEffect(() => {
+    // console.log("imgActive:", imgActive);
+    // }, [imgActive])
+
+    const [location, setLocation] = useState(null);
+    const [errorMsg, setErrorMsg] = useState(null);
+
     useEffect(() => {
-    console.log("imgActive:", imgActive);
-    }, [imgActive])
+        (async () => {
+          let { status } = await Location.requestForegroundPermissionsAsync();
+          if (status !== 'granted') {
+            setErrorMsg('Permission to access location was denied');
+            return;
+          }
+    
+          let location = await Location.getCurrentPositionAsync({});
+          setLocation(location);
+        })();
+    }, []);
+
+    let text = 'Waiting..';
+    if (errorMsg) {
+        text = errorMsg;
+    } else if (location) {
+        text = JSON.stringify(location);
+    }
 
     return (
         <View style={styles.container}>
@@ -68,26 +94,105 @@ const Home = ({navigation}) => {
                     }
                 </View>
             </View>
+            {/* <View><Text>{text}</Text></View> */}
             <View style={styles.buttonWrap}>
-                <TouchableOpacity  style={styles.button} onPress={() => navigation.navigate('Map')}>
+                <TouchableOpacity 
+                    style={styles.button} 
+                    onPress={() => {
+                        // navigation.navigate('Map', {
+                        //     Lat: location.coords.latitude,
+                        //     Long: location.coords.longitude
+                        // });
+                        navigation.navigate('Map');
+                    }}
+                >
                     <Image
-                        style={{width:'100%', height:'100%', borderRadius:25}}
-                        source={require('../../assets/icon.png')}
+                        style={{width:'100%', height:'100%', borderRadius:25, resizeMode: 'contain'}}
+                        source={require('../../assets/icon/map.png')}
+                    />
+                </TouchableOpacity>
+                <TouchableOpacity  style={styles.button} onPress={() => navigation.navigate('Top 10')}>
+                    <Image
+                        style={{width:'100%', height:'100%', borderRadius:25, resizeMode: 'contain'}}
+                        source={require('../../assets/icon/crownai.png')}
                     />
                 </TouchableOpacity>
             </View>
-            <FlatList 
+            <View style={styles.buttonWrap}>
+                <TouchableOpacity  style={styles.button} onPress={() => navigation.navigate('Test')}>
+                    <Image
+                        style={{width:'100%', height:'100%', borderRadius:25, resizeMode: 'contain'}}
+                        source={require('../../assets/icon/restaurant.png')}
+                    />
+                </TouchableOpacity>
+                {/* <TouchableOpacity  style={styles.button} onPress={() => navigation.navigate('Map')}> */}
+                <TouchableOpacity  style={styles.button} onPress={() => console.log(location)}>
+                    <Image
+                        style={{width:'100%', height:'100%', borderRadius:25, resizeMode: 'contain'}}
+                        source={require('../../assets/icon/fork-logo.png')}
+                    />
+                </TouchableOpacity>
+            </View>
+            {/* <FlatList 
                 data={allItems} 
                 renderItem={({item}) => {
                     return <Card info={item} />
                 }}
                 keyExtractor={(allItems) => allItems.id.toString()}
                 showsHorizontalScrollIndicator={false}
-            />
+            /> */}
         </View>
     );
 };
 
+const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: '#fff',
+      alignItems: 'center',
+      //justifyContent: 'center',
+    },
+    wrapper: {
+        width: deviceWidth,
+        height: deviceHeight * 0.35
+    },
+    wrapperDot: {
+        position: 'absolute',
+        bottom: 0,
+        flexDirection: 'row',
+        alignSelf: 'center'
+    },
+    dotActive: {
+        margin: 3,
+        color: 'grey'
+    },
+    dot: {
+        margin: 3,
+        color: 'white'
+    },
+    text: {
+        color: '#fff',
+        fontSize: 30,
+        fontWeight: 'bold'
+    },
+    buttonWrap: {
+        flexDirection: 'row'
+    },
+    button: {
+        alignItems: 'center',
+        width: deviceWidth * 0.4,
+        height: deviceHeight * 0.24,
+        margin: 10,
+        justifyContent: 'center',
+        borderRadius: 25,
+        padding: 10,
+        shadowColor: 'rgba(0,0,0, .4)', 
+        shadowOffset: { height: 1, width: 1 }, 
+        shadowOpacity: 1.5, 
+        shadowRadius: 3.5, 
+        backgroundColor: '#fff',
+    }
+});
 
 const allItems = [
     /*{
@@ -595,68 +700,5 @@ const allItems = [
         image: require('../../assets/rest-happy.jpg')
     }
 ]
-
-
-const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      backgroundColor: '#fff',
-      alignItems: 'center',
-      //justifyContent: 'center',
-    },
-    wrapper: {
-        width: deviceWidth,
-        height: deviceHeight * 0.25
-    },
-    wrapperDot: {
-        position: 'absolute',
-        bottom: 0,
-        flexDirection: 'row',
-        alignSelf: 'center'
-    },
-    dotActive: {
-        margin: 3,
-        color: 'black'
-    },
-    dot: {
-        margin: 3,
-        color: 'white'
-    },
-    slide1: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: '#9DD6EB'
-    },
-    slide2: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: '#97CAE5'
-    },
-    slide3: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: '#92BBD9'
-    },
-    text: {
-        color: '#fff',
-        fontSize: 30,
-        fontWeight: 'bold'
-    },
-    buttonWrap: {
-        flexDirection: 'row'
-    },
-    button: {
-        alignItems: 'center',
-        width: deviceWidth * 0.4,
-        height: deviceHeight * 0.25,
-        margin: 10,
-        justifyContent: 'center',
-        borderRadius: 25,
-        backgroundColor: 'red'
-    }
-});
 
 export default Home;
