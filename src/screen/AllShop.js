@@ -1,207 +1,82 @@
-import { StatusBar } from 'expo-status-bar';
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, Text, FlatList, ScrollView, Dimensions, Image, TouchableOpacity, Button } from 'react-native';
+import {
+    SafeAreaView,
+    Text,
+    StyleSheet,
+    View,
+    FlatList,
+    TextInput,
+    Dimensions
+} from 'react-native';
 import Card from '../component/Card';
-import Header from '../component/Header';
-import Map from '../screen/Map';
 
-import * as Location from 'expo-location';
+export default function AllShop() {
+    const [search, setSearch] = useState('');
+    const [filteredDataSource, setFilteredDataSource] = useState([]);
 
-const ads = [
-    'https://cdn.pixabay.com/photo/2022/01/03/01/57/airport-6911566_960_720.jpg',
-    'https://cdn.pixabay.com/photo/2017/03/23/09/34/artificial-intelligence-2167835_960_720.jpg',
-    'https://cdn.pixabay.com/photo/2016/09/07/10/04/education-1651259_960_720.jpg'
-]
-
-const deviceWidth = Dimensions.get("window").width;
-const deviceHeight = Dimensions.get("window").height;
-
-const Home = ({ navigation }) => {
-    const [imgActive, setimgActive] = useState(0);
-    onchange = (nativeEvent) => {
-        if (nativeEvent) {
-            console.log("nativeEvent:", nativeEvent);
-
-            const slide = Math.ceil(nativeEvent.contentOffset.x / nativeEvent.layoutMeasurement.width);
-            console.log("slide:", slide);
-
-            if (slide != imgActive) {
-                setimgActive(slide);
-            }
+    const searchFilterFunction = (text) => {
+        if (text) {
+            const newData = allItems.filter(function (item) {
+                const itemData = item.name
+                    ? item.name.toUpperCase()
+                    : ''.toUpperCase();
+                const textData = text.toUpperCase();
+                return itemData.indexOf(textData) > -1;
+            });
+            setFilteredDataSource(newData);
+            setSearch(text);
+        } else {
+            setFilteredDataSource(allItems);
+            setSearch(text);
         }
-    }
-
-    // useEffect(() => {
-    // console.log("imgActive:", imgActive);
-    // }, [imgActive])
-
-    const [location, setLocation] = useState(null);
-    const [errorMsg, setErrorMsg] = useState(null);
-
-    useEffect(() => {
-        (async () => {
-            let { status } = await Location.requestForegroundPermissionsAsync();
-            if (status !== 'granted') {
-                setErrorMsg('Permission to access location was denied');
-                return;
-            }
-
-            let location = await Location.getCurrentPositionAsync({ accuracy: Location.Accuracy.Balanced, maximumAge: 5000 });
-            setLocation(location);
-        })();
-    }, []);
-
-    let text = 'Waiting..';
-    if (errorMsg) {
-        text = errorMsg;
-    } else if (location) {
-        text = JSON.stringify(location);
-    }
+    };
 
     return (
-        <View style={styles.container}>
-            {/* <Header text="Perry Jeh" /> */}
-            <StatusBar style="auto" />
-            <View style={styles.wrapper}>
-                <ScrollView
-                    onScroll={({ nativeEvent }) => onchange(nativeEvent)}
-                    showsHorizontalScrollIndicator={false}
-                    pagingEnabled
-                    horizontal
-                    style={styles.wrapper}
-                >
-                    {
-                        ads.map((e, index) =>
-                            <Image
-                                key={e}
-                                resizeMode='stretch'
-                                style={styles.wrapper}
-                                source={{ uri: e }}
-                            />
-                        )
-                    }
-                </ScrollView>
-                <View style={styles.wrapperDot}>
-                    {
-                        ads.map((e, index) =>
-                            <Text
-                                key={index}
-                                style={imgActive === index ? styles.dotActive : styles.dot}
-                            >
-                                ●
-                            </Text>
-                        )
-                    }
-                </View>
-            </View>
-            {/* <View><Button onPress={() => { console.log(location) }} title="console" /></View> */}
-            <View style={styles.buttonWrap}>
-                <TouchableOpacity
-                    style={styles.button}
-                    onPress={() => {
-                        navigation.navigate('Map', {
-                            Lat: location.coords.latitude,
-                            Long: location.coords.longitude
-                        });
-                        // navigation.navigate('Map');
+        <SafeAreaView style={{ flex: 1 }}>
+            <View style={styles.container}>
+                <TextInput
+                    style={styles.textInputStyle}
+                    onChangeText={(text) => searchFilterFunction(text)}
+                    value={search}
+                    underlineColorAndroid="transparent"
+                    placeholder="Search Here"
+                />
+                <FlatList
+                    data={filteredDataSource}
+                    renderItem={({ item }) => {
+                        return <Card info={item} />
                     }}
-                >
-                    <Image
-                        style={{ width: '100%', height: '100%', borderRadius: 25, resizeMode: 'contain' }}
-                        source={require('../../assets/icon/map.png')}
-                    />
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Top 10')}>
-                    <Image
-                        style={{ width: '100%', height: '100%', borderRadius: 25, resizeMode: 'contain' }}
-                        source={require('../../assets/icon/crownai.png')}
-                    />
-                </TouchableOpacity>
+                    keyExtractor={(allItems) => allItems.id.toString()}
+                    showsHorizontalScrollIndicator={false}
+                />
             </View>
-            <View style={styles.buttonWrap}>
-                <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Test')}>
-                    <Image
-                        style={{ width: '100%', height: '100%', borderRadius: 25, resizeMode: 'contain' }}
-                        source={require('../../assets/icon/restaurant.png')}
-                    />
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('All Resturant')}>
-                    <Image
-                        style={{ width: '100%', height: '100%', borderRadius: 25, resizeMode: 'contain' }}
-                        source={require('../../assets/icon/fork-logo.png')}
-                    />
-                </TouchableOpacity>
-            </View>
-            {/* <FlatList 
-                data={allItems} 
-                renderItem={({item}) => {
-                    return <Card info={item} />
-                }}
-                keyExtractor={(allItems) => allItems.id.toString()}
-                showsHorizontalScrollIndicator={false}
-            /> */}
-        </View>
+        </SafeAreaView>
     );
-};
+}
+
+const deviceWidth = Dimensions.get("window").width;
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#fff',
         alignItems: 'center',
-        //justifyContent: 'center',
-    },
-    wrapper: {
-        width: deviceWidth,
-        height: deviceHeight * 0.35
-    },
-    wrapperDot: {
-        position: 'absolute',
-        bottom: 0,
-        flexDirection: 'row',
-        alignSelf: 'center'
-    },
-    dotActive: {
-        margin: 3,
-        color: 'grey'
-    },
-    dot: {
-        margin: 3,
-        color: 'white'
-    },
-    text: {
-        color: '#fff',
-        fontSize: 30,
-        fontWeight: 'bold'
-    },
-    buttonWrap: {
-        marginTop: 30,
-        flexDirection: 'row'
-    },
-    button: {
-        alignItems: 'center',
-        width: deviceWidth * 0.4,
-        height: deviceHeight * 0.18,
-        margin: 10,
         justifyContent: 'center',
-        borderRadius: 25,
-        padding: 10,
-        shadowColor: 'rgba(0,0,0, .4)',
-        shadowOffset: { height: 1, width: 1 },
-        shadowOpacity: 1.5,
-        shadowRadius: 3.5,
-        backgroundColor: '#fff',
-    }
+    },
+    textInputStyle: {
+        height: 40,
+        width: deviceWidth - 30,
+        borderRadius: 10,
+        borderWidth: 1,
+        paddingLeft: 20,
+        marginTop: 15,
+        margin: 5,
+        borderColor: '#009688',
+        backgroundColor: '#FFFFFF',
+    },
 });
 
 const allItems = [
-    /*{
-        id: 1,
-        name: 'Happinesssss Plus',
-        tag: 'Cafe, Coffee Shop',
-        location: 'Shop 1&2, G/F, Island Lodge, 21-23 Kam Hong Street, North Point',
-        image: require('../../assets/rest-happy.jpg')
-    }*/
     {
         id: 1,
         tag: '中式',
@@ -700,5 +575,3 @@ const allItems = [
         image: require('../../assets/rest-happy.jpg')
     }
 ]
-
-export default Home;

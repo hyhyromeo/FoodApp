@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, View, Text, Dimensions, Image } from 'react-native';
 import IconLabel from './IconLabel';
 
-const Card = ({info}) => {
+const Card = ({ info }) => {
     // const json = JSON.stringify(props.info);
     // console.log(json)
     return (
@@ -14,9 +14,9 @@ const Card = ({info}) => {
             <View style={styles.infoStyle}>
                 <Text style={styles.titleStyle}>{info.name}</Text>
                 <Text style={styles.tagStyle}>{info.tag}</Text>
-                <IconLabel location={info.location}/>
+                <IconLabel location={info.location} />
             </View>
-            
+
         </View>
     );
 };
@@ -26,19 +26,19 @@ const radius = 20;
 
 const styles = StyleSheet.create({
     cardContainer: {
-      marginTop: 10,
-      width: deviceWidth - 40,
-      //padding: 10,
-      height: 200,
-      backgroundColor: '#fff',
-      borderRadius: radius,
-    //   alignItems: 'center',
-    //   justifyContent: 'flex-end',
-    //   paddingBottom: 20,
-       shadowOpacity:0.6,
-       shadowRadius:5,
-       shadowOffset: { width: 0, height: 3 },
-       elevation: 9
+        marginTop: 10,
+        width: deviceWidth - 40,
+        //padding: 10,
+        height: 200,
+        backgroundColor: '#fff',
+        borderRadius: radius,
+        //   alignItems: 'center',
+        //   justifyContent: 'flex-end',
+        //   paddingBottom: 20,
+        shadowOpacity: 0.6,
+        shadowRadius: 1,
+        shadowOffset: { width: 0, height: 3 },
+        elevation: 9
     },
     imageContainer: {
         height: 130,

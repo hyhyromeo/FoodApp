@@ -7,6 +7,7 @@ import Home from './src/screen/Home';
 import Map from './src/screen/Map';
 import TopTen from './src/screen/TopTen';
 import TestClass from './src/screen/TestClass';
+import AllShop from './src/screen/AllShop';
 
 const Stack = createNativeStackNavigator();
 
@@ -43,6 +44,7 @@ const StackNavigator = (
     <Stack.Screen name="Map" component={Map} />
     <Stack.Screen name="Top 10" component={TopTen} />
     <Stack.Screen name="Test" component={TestClass} />
+    <Stack.Screen name="All Resturant" component={AllShop} />
   </Stack.Navigator>
 );
 
@@ -62,8 +64,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   header: {
-    borderColor: "yellow",
-    borderWidth: 1,
     position: "relative",
     display: "flex",
     flexDirection: 'row',
