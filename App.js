@@ -12,11 +12,11 @@ function LogoTitle() {
   return(
     <View style={styles.header}>
       <Image
-        style={{ width: 30, height: 30}}
+        style={{ width: 40, height: 40, position:"absolute", top:-22, right:5, borderColor:"red",  borderWidth:1}}
         source={require('./assets/icon.png')}
       />
-      <Text style={{marginLeft:5}}>
-        Logo
+      <Text style={{ position:"absolute", left:5}}>
+        Logo text
       </Text>
     </View>
     
@@ -63,6 +63,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   header: {
+    borderColor:"yellow",  
+    borderWidth:1,
+    position:"relative",
     display:"flex",
     flexDirection: 'row',
     alignItems:'center'
