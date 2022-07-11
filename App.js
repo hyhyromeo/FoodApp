@@ -5,21 +5,23 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import Home from './src/screen/Home';
 import Map from './src/screen/Map';
+import TopTen from './src/screen/TopTen';
+import TestClass from './src/screen/TestClass';
 
 const Stack = createNativeStackNavigator();
 
 function LogoTitle() {
-  return(
+  return (
     <View style={styles.header}>
       <Image
-        style={{ width: 40, height: 40, position:"absolute", top:-22, right:5, borderColor:"red",  borderWidth:1}}
-        source={require('./assets/icon.png')}
+        style={{ width: '100%', height: 30, resizeMode: 'contain' }}
+        source={require('./assets/icon/sample_icon.png')}
       />
-      <Text style={{ position:"absolute", left:5}}>
-        Logo text
-      </Text>
+      {/* <Text style={{marginLeft:5}}>
+        Logo
+      </Text> */}
     </View>
-    
+
 
   );
 }
@@ -36,14 +38,11 @@ const StackNavigator = (
           // padding:100
 
         }
-      }
-    
-    }
+      }}
     />
-    <Stack.Screen
-      name="Map"
-      component={Map}
-    />
+    <Stack.Screen name="Map" component={Map} />
+    <Stack.Screen name="Top 10" component={TopTen} />
+    <Stack.Screen name="Test" component={TestClass} />
   </Stack.Navigator>
 );
 
@@ -63,11 +62,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   header: {
-    borderColor:"yellow",  
-    borderWidth:1,
-    position:"relative",
-    display:"flex",
+    borderColor: "yellow",
+    borderWidth: 1,
+    position: "relative",
+    display: "flex",
     flexDirection: 'row',
-    alignItems:'center'
+    alignItems: 'center'
   }
 });
