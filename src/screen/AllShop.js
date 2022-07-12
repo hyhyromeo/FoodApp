@@ -12,7 +12,7 @@ import Card from '../component/Card';
 
 export default function AllShop() {
     const [search, setSearch] = useState('');
-    const [filteredDataSource, setFilteredDataSource] = useState([]);
+    const [filteredDataSource, setFilteredDataSource] = useState(allItems);
 
     const searchFilterFunction = (text) => {
         if (text) {
