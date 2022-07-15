@@ -16,29 +16,26 @@ const Card = ({ info }) => {
                 <Text style={styles.tagStyle}>{info.tag}</Text>
                 <IconLabel location={info.location} />
             </View>
-
         </View>
     );
 };
 
 const deviceWidth = Dimensions.get("window").width;
+const deviceHeight = Dimensions.get("window").height;
 const radius = 20;
 
 const styles = StyleSheet.create({
     cardContainer: {
         marginTop: 10,
         width: deviceWidth - 40,
-        //padding: 10,
-        height: 200,
+        height: 220,
         backgroundColor: '#fff',
         borderRadius: radius,
-        //   alignItems: 'center',
-        //   justifyContent: 'flex-end',
-        //   paddingBottom: 20,
         shadowOpacity: 0.6,
         shadowRadius: 1,
         shadowOffset: { width: 0, height: 3 },
         elevation: 9
+
     },
     imageContainer: {
         height: 130,
@@ -54,7 +51,6 @@ const styles = StyleSheet.create({
         fontWeight: '200'
     },
     infoStyle: {
-        //padding: 10
         marginHorizontal: 10,
         marginVertical: 5
     }

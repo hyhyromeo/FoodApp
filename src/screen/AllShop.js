@@ -6,42 +6,128 @@ import {
     View,
     FlatList,
     TextInput,
-    Dimensions
+    Dimensions,
+    Flexbox
 } from 'react-native';
+import DropDownPicker from 'react-native-dropdown-picker';
+import * as _ from 'lodash';
+
 import Card from '../component/Card';
 
 export default function AllShop() {
+
+    useEffect(() => {
+        setItems(_.unionBy(allItems, allItems, 'tag').map((item) => {
+            const temp = { label: item.tag, value: item.tag }
+            return temp
+        }))
+    }, [])
+
     const [search, setSearch] = useState('');
     const [filteredDataSource, setFilteredDataSource] = useState(allItems);
 
+
+    const [open, setOpen] = useState(false);
+    const [value, setValue] = useState(null);
+    const [sortValue, setSortValue] = useState(null);
+    const [items, setItems] = useState([]);
+
     const searchFilterFunction = (text) => {
-        if (text) {
-            const newData = allItems.filter(function (item) {
-                const itemData = item.name
-                    ? item.name.toUpperCase()
-                    : ''.toUpperCase();
-                const textData = text.toUpperCase();
-                return itemData.indexOf(textData) > -1;
-            });
-            setFilteredDataSource(newData);
+        if (sortValue && text) {
+            const newData = allItems.filter((item) => (
+                item.name.includes(text) && item.tag === sortValue
+            ));
+            setFilteredDataSource(newData)
             setSearch(text);
+
         } else {
-            setFilteredDataSource(allItems);
-            setSearch(text);
+            if (text) {
+                const newData = allItems.filter(function (item) {
+                    const itemData = item.name
+                        ? item.name.toUpperCase()
+                        : ''.toUpperCase();
+                    const textData = text.toUpperCase();
+                    return itemData.indexOf(textData) > -1;
+                });
+                setFilteredDataSource(newData);
+                setSearch(text);
+            } else {
+                setFilteredDataSource(allItems);
+                setSearch(text);
+            }
+        }
+    };
+
+    const sortFilterFunction = (text) => {
+        if (value && text) {
+            const newData = allItems.filter((item) => (
+                item.name.includes(search) && item.tag === text
+            ));
+            setFilteredDataSource(newData)
+            setSortValue(text);
+        }
+        else {
+            if (text) {
+                const newData = allItems.filter(function (item) {
+                    const itemData = item.name
+                        ? item.tag.toUpperCase()
+                        : ''.toUpperCase();
+                    const textData = text.toUpperCase();
+                    return itemData.indexOf(textData) > -1;
+                });
+                setFilteredDataSource(newData);
+                setSortValue(text);
+            } else {
+                setFilteredDataSource(allItems);
+                setSearch(text);
+            }
         }
     };
 
     return (
         <SafeAreaView style={{ flex: 1 }}>
             <View style={styles.container}>
-                <TextInput
-                    style={styles.textInputStyle}
-                    onChangeText={(text) => searchFilterFunction(text)}
-                    value={search}
-                    underlineColorAndroid="transparent"
-                    placeholder="Search Here"
-                />
+                <View style={styles.filter}>
+                    <View>
+                        <TextInput
+                            style={styles.textInputStyle}
+                            onChangeText={(text) => {
+                                searchFilterFunction(text)
+                                // setValue(null)
+                            }}
+                            value={search}
+                            underlineColorAndroid="transparent"
+                            placeholder="Search Here"
+                        />
+                    </View>
+
+                    <View>
+                        <DropDownPicker
+                            style={styles.dropdown}
+                            dropDownContainerStyle={{
+                                width: deviceWidth / 2 - 80,
+                                marginHorizontal: 15,
+                                marginTop: -10
+                                //backgroundColor: "#dfdfdf"
+                            }}
+                            onChangeValue={(text) => {
+                                sortFilterFunction(text)
+                                // setSearch('')
+                            }}
+                            open={open}
+                            value={value}
+                            items={items}
+                            setOpen={setOpen}
+                            setValue={setValue}
+                            setItems={setItems}
+                        />
+                    </View>
+
+                </View>
+
                 <FlatList
+                    style={{ paddingHorizontal: 10 }}
+                    contentContainerStyle={{ paddingBottom: 200 }}
                     data={filteredDataSource}
                     renderItem={({ item }) => {
                         return <Card info={item} />
@@ -50,7 +136,7 @@ export default function AllShop() {
                     showsHorizontalScrollIndicator={false}
                 />
             </View>
-        </SafeAreaView>
+        </SafeAreaView >
     );
 }
 
@@ -58,22 +144,37 @@ const deviceWidth = Dimensions.get("window").width;
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
         backgroundColor: '#fff',
         alignItems: 'center',
         justifyContent: 'center',
     },
     textInputStyle: {
-        height: 40,
-        width: deviceWidth - 30,
+        height: 50,
+        width: deviceWidth / 2,
         borderRadius: 10,
         borderWidth: 1,
         paddingLeft: 20,
-        marginTop: 15,
-        margin: 5,
         borderColor: '#009688',
-        backgroundColor: '#FFFFFF',
+        backgroundColor: '#fff',
+
     },
+    dropdown: {
+        marginTop: -10,
+        width: deviceWidth / 2 - 80,
+        marginHorizontal: 15,
+        height: 40,
+        borderRadius: 10,
+        backgroundColor: '#fff',
+        borderColor: '#009688',
+    },
+    filter: {
+        flexDirection: 'row',
+        width: deviceWidth - 10,
+        zIndex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+        marginTop: 10
+    }
 });
 
 const allItems = [

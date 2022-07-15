@@ -1,12 +1,12 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, Image } from 'react-native';
+import { StyleSheet, Text, View, Image, Dimensions } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import Home from './src/screen/Home';
 import Map from './src/screen/Map';
 import TopTen from './src/screen/TopTen';
-import TestClass from './src/screen/TestClass';
+import FoodLog from './src/screen/FoodLog';
 import AllShop from './src/screen/AllShop';
 
 const Stack = createNativeStackNavigator();
@@ -43,7 +43,7 @@ const StackNavigator = (
     />
     <Stack.Screen name="Map" component={Map} />
     <Stack.Screen name="Top 10" component={TopTen} />
-    <Stack.Screen name="Test" component={TestClass} />
+    <Stack.Screen name="Food Log" component={FoodLog} />
     <Stack.Screen name="All Resturant" component={AllShop} />
   </Stack.Navigator>
 );
@@ -64,8 +64,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   header: {
-    position: "relative",
-    display: "flex",
+    //position: "relative",
+    width: Dimensions.get("window").width - 40,
+    justifyContent: "center",
     flexDirection: 'row',
     alignItems: 'center'
   }

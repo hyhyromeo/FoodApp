@@ -1,6 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, Text, FlatList, ScrollView, Dimensions, Image, TouchableOpacity, Button } from 'react-native';
+import { StyleSheet, View, Text, FlatList, ScrollView, Dimensions, Image, TouchableOpacity, Button, Linking } from 'react-native';
 import Card from '../component/Card';
 import Header from '../component/Header';
 import Map from '../screen/Map';
@@ -8,9 +8,19 @@ import Map from '../screen/Map';
 import * as Location from 'expo-location';
 
 const ads = [
-    'https://cdn.pixabay.com/photo/2022/01/03/01/57/airport-6911566_960_720.jpg',
-    'https://cdn.pixabay.com/photo/2017/03/23/09/34/artificial-intelligence-2167835_960_720.jpg',
-    'https://cdn.pixabay.com/photo/2016/09/07/10/04/education-1651259_960_720.jpg'
+    {
+        image: 'https://cdn.pixabay.com/photo/2022/01/03/01/57/airport-6911566_960_720.jpg',
+        url: 'https://google.com'
+    },
+    {
+        image: 'https://cdn.pixabay.com/photo/2017/03/23/09/34/artificial-intelligence-2167835_960_720.jpg',
+        url: 'https://urbtix.com'
+    },
+    {
+        image: 'https://cdn.pixabay.com/photo/2016/09/07/10/04/education-1651259_960_720.jpg',
+        url: 'https://yahoo.com.hk'
+
+    }
 ]
 
 const deviceWidth = Dimensions.get("window").width;
@@ -20,10 +30,10 @@ const Home = ({ navigation }) => {
     const [imgActive, setimgActive] = useState(0);
     onchange = (nativeEvent) => {
         if (nativeEvent) {
-            console.log("nativeEvent:", nativeEvent);
+            //console.log("nativeEvent:", nativeEvent);
 
             const slide = Math.ceil(nativeEvent.contentOffset.x / nativeEvent.layoutMeasurement.width);
-            console.log("slide:", slide);
+            //console.log("slide:", slide);
 
             if (slide != imgActive) {
                 setimgActive(slide);
@@ -65,6 +75,7 @@ const Home = ({ navigation }) => {
             <View style={styles.wrapper}>
                 <ScrollView
                     onScroll={({ nativeEvent }) => onchange(nativeEvent)}
+                    scrollEventThrottle={0}
                     showsHorizontalScrollIndicator={false}
                     pagingEnabled
                     horizontal
@@ -72,12 +83,16 @@ const Home = ({ navigation }) => {
                 >
                     {
                         ads.map((e, index) =>
-                            <Image
-                                key={e}
-                                resizeMode='stretch'
-                                style={styles.wrapper}
-                                source={{ uri: e }}
-                            />
+                            <TouchableOpacity
+                                key={index}
+                                onPress={() => Linking.openURL(e.url)}
+                            >
+                                <Image
+                                    resizeMode='stretch'
+                                    style={styles.wrapper}
+                                    source={{ uri: e.image }}
+                                />
+                            </TouchableOpacity>
                         )
                     }
                 </ScrollView>
@@ -119,13 +134,13 @@ const Home = ({ navigation }) => {
                 </TouchableOpacity>
             </View>
             <View style={styles.buttonWrap}>
-                <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Test')}>
+                <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('All Resturant')}>
                     <Image
                         style={{ width: '100%', height: '100%', borderRadius: 25, resizeMode: 'contain' }}
                         source={require('../../assets/icon/restaurant.png')}
                     />
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('All Resturant')}>
+                <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Food Log')}>
                     <Image
                         style={{ width: '100%', height: '100%', borderRadius: 25, resizeMode: 'contain' }}
                         source={require('../../assets/icon/fork-logo.png')}
