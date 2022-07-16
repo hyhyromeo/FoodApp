@@ -69,7 +69,7 @@ export default function AllShop() {
         else {
             if (text) {
                 const newData = allItems.filter(function (item) {
-                    const itemData = item.name
+                    const itemData = item.tag
                         ? item.tag.toUpperCase()
                         : ''.toUpperCase();
                     const textData = text.toUpperCase();
@@ -79,7 +79,7 @@ export default function AllShop() {
                 setSortValue(text);
             } else {
                 setFilteredDataSource(allItems);
-                setSearch(text);
+                setSortValue(text);
             }
         }
     };
@@ -97,13 +97,14 @@ export default function AllShop() {
                             }}
                             value={search}
                             underlineColorAndroid="transparent"
-                            placeholder="Search Here"
+                            placeholder="搜尋"
                         />
                     </View>
 
                     <View>
                         <DropDownPicker
                             style={styles.dropdown}
+                            placeholder="分類"
                             dropDownContainerStyle={{
                                 width: deviceWidth / 2 - 80,
                                 marginHorizontal: 15,

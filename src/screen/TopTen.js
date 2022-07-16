@@ -6,6 +6,7 @@ export default function TopTen(){
     return(
         <View style={styles.container}>
             <FlatList 
+            style={{ paddingHorizontal: 10 }}
                 data={TopTenData} 
                 renderItem={({item}) => {
                     return <Card info={item} />

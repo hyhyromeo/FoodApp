@@ -1,11 +1,13 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, Text, FlatList, ScrollView, Dimensions, Image, TouchableOpacity, Button, Linking } from 'react-native';
+import { StyleSheet, View, Text, FlatList, ScrollView, Dimensions, Image, TouchableOpacity, Button, Linking, Modal } from 'react-native';
+import * as Location from 'expo-location';
+import { WebView } from 'react-native-webview';
+
 import Card from '../component/Card';
 import Header from '../component/Header';
 import Map from '../screen/Map';
 
-import * as Location from 'expo-location';
 
 const ads = [
     {
@@ -14,7 +16,7 @@ const ads = [
     },
     {
         image: 'https://cdn.pixabay.com/photo/2017/03/23/09/34/artificial-intelligence-2167835_960_720.jpg',
-        url: 'https://urbtix.com'
+        url: 'https://youtube.com'
     },
     {
         image: 'https://cdn.pixabay.com/photo/2016/09/07/10/04/education-1651259_960_720.jpg',
@@ -27,6 +29,9 @@ const deviceWidth = Dimensions.get("window").width;
 const deviceHeight = Dimensions.get("window").height;
 
 const Home = ({ navigation }) => {
+    const [modalVisible, setModalVisible] = useState(false);
+    const [url, setUrl] = useState('');
+    const [urlOnChange, setUrlOnChange] = useState('');
     const [imgActive, setimgActive] = useState(0);
     onchange = (nativeEvent) => {
         if (nativeEvent) {
@@ -70,7 +75,6 @@ const Home = ({ navigation }) => {
 
     return (
         <View style={styles.container}>
-            {/* <Header text="Perry Jeh" /> */}
             <StatusBar style="auto" />
             <View style={styles.wrapper}>
                 <ScrollView
@@ -85,7 +89,8 @@ const Home = ({ navigation }) => {
                         ads.map((e, index) =>
                             <TouchableOpacity
                                 key={index}
-                                onPress={() => Linking.openURL(e.url)}
+                                // onPress={() => Linking.openURL(e.url)}
+                                onPress={() => {setUrl(e.url); setModalVisible(!modalVisible)}}
                             >
                                 <Image
                                     resizeMode='stretch'
@@ -109,7 +114,6 @@ const Home = ({ navigation }) => {
                     }
                 </View>
             </View>
-            {/* <View><Button onPress={() => { console.log(location) }} title="console" /></View> */}
             <View style={styles.buttonWrap}>
                 <TouchableOpacity
                     style={styles.button}
@@ -118,7 +122,6 @@ const Home = ({ navigation }) => {
                             Lat: location.coords.latitude,
                             Long: location.coords.longitude
                         });
-                        // navigation.navigate('Map');
                     }}
                 >
                     <Image
@@ -147,6 +150,36 @@ const Home = ({ navigation }) => {
                     />
                 </TouchableOpacity>
             </View>
+            <Modal
+                animationType="slide"
+                transparent={true}
+                visible={modalVisible}
+                onRequestClose={() => {
+                    Alert.alert("Modal has been closed.");
+                    setModalVisible(!modalVisible);
+                }}
+            >
+                <View style={styles.modalView}>
+                    <TouchableOpacity
+                        style={styles.closeModal}
+                        onPress={() => setModalVisible(!modalVisible)}
+                    >
+                        <Image
+                            style={{ width: '100%', height: '100%', resizeMode: 'contain' }}
+                            source={require('../../assets/icon/close.png')}
+                        />
+                    </TouchableOpacity>
+                    <Text style={{position:'absolute', top: 15, fontSize: 20, flexWrap:'nowrap'}}>{urlOnChange.title}</Text>
+                    <WebView 
+                        source={ {uri: url }} 
+                        style={{width: deviceWidth-10, margin:10}}
+                        onNavigationStateChange={setUrlOnChange.bind(this)}
+                        // javaScriptEnabled = {true}
+                        // domStorageEnabled = {true}
+                        startInLoadingState={false}
+                    />
+                </View>
+            </Modal>
             {/* <FlatList 
                 data={allItems} 
                 renderItem={({item}) => {
@@ -206,6 +239,34 @@ const styles = StyleSheet.create({
         shadowOpacity: 1.5,
         shadowRadius: 3.5,
         backgroundColor: '#fff',
+    },
+    modalView: {
+        flex: 1,
+        position: "relative",
+        marginTop: 60,
+        width: deviceWidth - 10,
+        backgroundColor: "white",
+        borderRadius: 20,
+        padding: 35,
+        alignItems: "center",
+        alignContent: 'center',
+        alignSelf: 'center',
+        justifyContent: 'center',
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 2
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 4,
+        elevation: 5
+    },
+    closeModal: {
+        width: 30, height: 30,
+        position: "absolute",
+        left: 10,
+        top: 10
+
     }
 });
 

@@ -1,14 +1,17 @@
 import React, { useState } from "react";
 import { StyleSheet, Text, View, Image, Dimensions, TouchableOpacity, Modal } from 'react-native';
+import Sample1 from './FoodLog/Sample1'
+import Sample2 from './FoodLog/Sample2'
 
 export default function FoodLog() {
     const [modalVisible, setModalVisible] = useState(false);
+    const [modalScreen, setModalScreen] = useState(<Sample1/>);
     return (
         <View style={styles.container}>
             <View style={styles.buttonWrap}>
                 <TouchableOpacity
                     style={styles.button}
-                    onPress={() => setModalVisible(!modalVisible)}
+                    onPress={() => {setModalScreen(<Sample1/>);setModalVisible(!modalVisible)}}
                 //onPress={() => navigation.navigate('All Resturant')}
                 >
                     <Image
@@ -20,14 +23,14 @@ export default function FoodLog() {
 
                 <TouchableOpacity
                     style={styles.button}
-                    onPress={() => setModalVisible(!modalVisible)}
+                    onPress={() => {setModalScreen(<Sample2/>);setModalVisible(!modalVisible)}}
                 //onPress={() => navigation.navigate('Food Log')}
                 >
                     <Image
                         style={{ width: '100%', height: '50%', borderRadius: 15, resizeMode: 'stretch' }}
                         source={require('../../assets/icon/food-log-sample-2.jpg')}
                     />
-                    <Text>手工漢堡小店  麻堡</Text>
+                    <Text>一年一度！全港4大榴槤放題/自助餐集合</Text>
                 </TouchableOpacity>
 
             </View>
@@ -41,16 +44,16 @@ export default function FoodLog() {
                 }}
             >
                 <View style={styles.modalView}>
-                    <Text>Test</Text>
                     <TouchableOpacity
                         style={styles.closeModal}
-                        onPress={() => setModalVisible(!modalVisible)}
+                        onPress={() => {setModalVisible(!modalVisible)}}
                     >
                         <Image
                             style={{ width: '100%', height: '100%', resizeMode: 'contain' }}
                             source={require('../../assets/icon/close.png')}
                         />
                     </TouchableOpacity>
+                    {modalScreen}
                 </View>
             </Modal>
         </View>

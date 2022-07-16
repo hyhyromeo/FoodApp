@@ -15,8 +15,8 @@ function LogoTitle() {
   return (
     <View style={styles.header}>
       <Image
-        style={{ width: '100%', height: 30, resizeMode: 'contain' }}
-        source={require('./assets/icon/sample_icon.png')}
+        style={{ width: '100%', height: 40, resizeMode: 'contain' }}
+        source={require('./assets/icon/logo.png')}
       />
       {/* <Text style={{marginLeft:5}}>
         Logo
