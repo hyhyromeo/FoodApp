@@ -53,6 +53,32 @@ export default function Map(route, navigation) {
                 }}
                     pinColor="black"
                 />
+                {
+                    itemData.map((item)=>(
+                        <Marker
+                          image={require('../../assets/icon/map_marker.png')}
+                          coordinate={{
+                            latitude: item.lat,
+                            longitude: item.long
+                          }}
+                        >
+                            <Callout tooltip>
+                                <View key={item.id}>
+                                    <View style={styles.bubble}>
+                                        <Text style={styles.name}>{item.name}</Text>
+                                        <Text>{item.location}</Text>
+                                        <Image
+                                            style={styles.image}
+                                            source={item.image}
+                                        />
+                                    </View>
+                                    <View style={styles.arrowBorder}/>
+                                    <View style={styles.arrow}/>
+                                </View>
+                            </Callout>
+                        </Marker>
+                    ))
+                }
                 <Marker 
                     image={require('../../assets/icon/map_marker.png')}
                     coordinate={{
@@ -191,3 +217,36 @@ const styles = StyleSheet.create({
         resizeMode: 'cover'
     },
 });
+
+const itemData = [
+    {
+        id:201,
+        tag: "西式",
+        name: "Ocio",
+        location: "將軍澳坑口重華路8號東港城2樓238號舖",
+        coords: "22.316379050744825, 114.26540297113816",
+        lat: 22.31637905,
+        long: 114.265403,
+        image: require('../../assets/map/201.jpg')
+    },
+    {
+        id:202,
+        tag: "日式",
+        name: "壽司郎",
+        location: "將軍澳常寧路2號TKO Gateway西翼1樓W101A號舖",
+        coords: "22.317306464941428, 114.26633588229394",
+        lat: 22.31730646,
+        long: 114.2663359,
+        image: require('../../assets/map/202.jpg')
+    },
+    {
+        id:203,
+        tag: "中式",
+        name: "稻香.茶居",
+        location: "將軍澳貿業路8號新都城中心2期2樓2039-2042號舖",
+        coords: "22.323403561194386, 114.25821996805999",
+        lat: 22.32340356,
+        long: 114.25822,
+        image: require('../../assets/map/203.jpg')
+    }
+]

@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { StyleSheet, View, Text, FlatList, ScrollView, Dimensions, Image, TouchableOpacity, Button, Linking, Modal } from 'react-native';
 import * as Location from 'expo-location';
 import { WebView } from 'react-native-webview';
@@ -33,6 +33,11 @@ const Home = ({ navigation }) => {
     const [url, setUrl] = useState('');
     const [urlOnChange, setUrlOnChange] = useState('');
     const [imgActive, setimgActive] = useState(0);
+    const [location, setLocation] = useState(null);
+    const [errorMsg, setErrorMsg] = useState(null);
+    const sheetRef = useRef(null);
+    
+
     onchange = (nativeEvent) => {
         if (nativeEvent) {
             //console.log("nativeEvent:", nativeEvent);
@@ -45,13 +50,6 @@ const Home = ({ navigation }) => {
             }
         }
     }
-
-    // useEffect(() => {
-    // console.log("imgActive:", imgActive);
-    // }, [imgActive])
-
-    const [location, setLocation] = useState(null);
-    const [errorMsg, setErrorMsg] = useState(null);
 
     useEffect(() => {
         (async () => {
@@ -74,6 +72,7 @@ const Home = ({ navigation }) => {
     }
 
     return (
+        
         <View style={styles.container}>
             <StatusBar style="auto" />
             <View style={styles.wrapper}>
@@ -158,16 +157,16 @@ const Home = ({ navigation }) => {
                     Alert.alert("Modal has been closed.");
                     setModalVisible(!modalVisible);
                 }}
-            >
+                >
                 <View style={styles.modalView}>
                     <TouchableOpacity
                         style={styles.closeModal}
                         onPress={() => setModalVisible(!modalVisible)}
-                    >
+                        >
                         <Image
                             style={{ width: '100%', height: '100%', resizeMode: 'contain' }}
                             source={require('../../assets/icon/close.png')}
-                        />
+                            />
                     </TouchableOpacity>
                     <Text style={{position:'absolute', top: 15, fontSize: 20, flexWrap:'nowrap'}}>{urlOnChange.title}</Text>
                     <WebView 
@@ -177,9 +176,10 @@ const Home = ({ navigation }) => {
                         // javaScriptEnabled = {true}
                         // domStorageEnabled = {true}
                         startInLoadingState={false}
-                    />
+                        />
                 </View>
             </Modal>
+
             {/* <FlatList 
                 data={allItems} 
                 renderItem={({item}) => {
@@ -189,6 +189,7 @@ const Home = ({ navigation }) => {
                 showsHorizontalScrollIndicator={false}
             /> */}
         </View>
+        
     );
 };
 

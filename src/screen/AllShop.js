@@ -38,8 +38,7 @@ export default function AllShop() {
                 item.name.includes(text) && item.tag === sortValue
             ));
             setFilteredDataSource(newData)
-            setSearch(text);
-
+            setSearch(text)
         } else {
             if (text) {
                 const newData = allItems.filter(function (item) {
