@@ -3,8 +3,6 @@ import { StyleSheet, View, Text, Dimensions, Image } from 'react-native';
 import IconLabel from './IconLabel';
 
 const Card = ({ info }) => {
-    // const json = JSON.stringify(props.info);
-    // console.log(json)
     return (
         <View style={styles.cardContainer}>
             <Image
@@ -20,9 +18,11 @@ const Card = ({ info }) => {
     );
 };
 
+
+const radius = 20;
+
 const deviceWidth = Dimensions.get("window").width;
 const deviceHeight = Dimensions.get("window").height;
-const radius = 20;
 
 const styles = StyleSheet.create({
     cardContainer: {

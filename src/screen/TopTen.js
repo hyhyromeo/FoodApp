@@ -1,16 +1,13 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, Text, FlatList, ScrollView, Dimensions, Image, Button, Flexbox } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { DataTable } from 'react-native-paper';
 import SwipeUpDownModal from 'react-native-swipe-modal-up-down';
-
 import Card from '../component/Card';
 
 const optionsPerPage = [2, 3, 4];
-const deviceWidth = Dimensions.get("window").width;
-const deviceHeight = Dimensions.get("window").height;
 
-export default function TopTen(){
+export default function TopTen() {
     const [page, setPage] = useState(0);
     const [itemsPerPage, setItemsPerPage] = useState(optionsPerPage[0]);
     const [ShowComment, setShowModelComment] = useState(false);
@@ -20,34 +17,35 @@ export default function TopTen(){
     const [selectedRate, setSelectedRate] = useState('');
     const [selectedImage, setSelectedImage] = useState(require('../../assets/icon/placeholder-image.png'));
     const [selectedAddress, setSelectedAddress] = useState('');
-    
+
     useEffect(() => {
         setPage(0);
     }, [itemsPerPage]);
-    return(
+    return (
         <View style={styles.container}>
             <DataTable>
                 <DataTable.Header>
-                    <DataTable.Title style={{flex: 3}}><Text style={{fontWeight:'bold', fontSize: 15}}>Name</Text></DataTable.Title>
-                    <DataTable.Title style={{justifyContent: 'center'}}><Text style={{fontWeight:'bold', fontSize: 15}}>Category</Text></DataTable.Title>
-                    <DataTable.Title style={{justifyContent: 'center'}}><Text style={{fontWeight:'bold', fontSize: 15}}>Rating</Text></DataTable.Title>
+                    <DataTable.Title style={{ flex: 3 }}><Text style={{ fontWeight: 'bold', fontSize: 15 }}>Name</Text></DataTable.Title>
+                    <DataTable.Title style={{ justifyContent: 'center' }}><Text style={{ fontWeight: 'bold', fontSize: 15 }}>Category</Text></DataTable.Title>
+                    <DataTable.Title style={{ justifyContent: 'center' }}><Text style={{ fontWeight: 'bold', fontSize: 15 }}>Rating</Text></DataTable.Title>
                 </DataTable.Header>
-                {TopTenData.map((item)=> (
-                    <TouchableOpacity 
-                      onPress={()=>{
-                        setSelectedName(item.name);
-                        setSelectedTag(item.tag);
-                        setSelectedRate(item.rating);
-                        setSelectedImage(item.image);
-                        setSelectedAddress(item.location);
-                        setShowModelComment(true);
-                      }}
+                {TopTenData.map((item, key) => (
+                    <TouchableOpacity
+                        key={key}
+                        onPress={() => {
+                            setSelectedName(item.name);
+                            setSelectedTag(item.tag);
+                            setSelectedRate(item.rating);
+                            setSelectedImage(item.image);
+                            setSelectedAddress(item.location);
+                            setShowModelComment(true);
+                        }}
                     >
-                    <DataTable.Row key={item.id}>
-                        <DataTable.Cell style={{flex: 3}}>{item.name}</DataTable.Cell>
-                        <DataTable.Cell style={{justifyContent: 'center'}}>{item.tag}</DataTable.Cell>
-                        <DataTable.Cell style={{justifyContent: 'center'}}>{item.rating}</DataTable.Cell>
-                    </DataTable.Row>
+                        <DataTable.Row >
+                            <DataTable.Cell style={{ flex: 3 }}>{item.name}</DataTable.Cell>
+                            <DataTable.Cell style={{ justifyContent: 'center' }}>{item.tag}</DataTable.Cell>
+                            <DataTable.Cell style={{ justifyContent: 'center' }}>{item.rating}</DataTable.Cell>
+                        </DataTable.Row>
                     </TouchableOpacity>
                 ))}
             </DataTable>
@@ -56,12 +54,12 @@ export default function TopTen(){
                 PressToanimate={animateModal}
                 ContentModal={
                     <View style={styles.containerContent}>
-                        <Image source={selectedImage} style={{width: deviceWidth, height:220, resizeMode:'stretch'}}/>
-                        <View style={{margin:10}}>
-                            <Text style={{fontWeight:'bold', fontSize: 32, margin:5, textAlign:'center'}}>{selectedName}</Text>
-                            <Text style={{fontWeight:'bold', fontSize: 22, margin:5}}>類別: {selectedTag}</Text>
-                            <Text style={{fontWeight:'bold', fontSize: 22, margin:5}}>地址: {selectedAddress}</Text>
-                            <Text style={{fontWeight:'bold', fontSize: 22, margin:5}}>評分: {selectedRate}</Text>
+                        <Image source={selectedImage} style={{ width: deviceWidth, height: 220, resizeMode: 'stretch' }} />
+                        <View style={{ margin: 10 }}>
+                            <Text style={{ fontWeight: 'bold', fontSize: 32, margin: 5, textAlign: 'center' }}>{selectedName}</Text>
+                            <Text style={{ fontWeight: 'bold', fontSize: 22, margin: 5 }}>類別: {selectedTag}</Text>
+                            <Text style={{ fontWeight: 'bold', fontSize: 22, margin: 5 }}>地址: {selectedAddress}</Text>
+                            <Text style={{ fontWeight: 'bold', fontSize: 22, margin: 5 }}>評分: {selectedRate}</Text>
                         </View>
                     </View>
                 }
@@ -69,17 +67,20 @@ export default function TopTen(){
                 ContentModalStyle={styles.Modal}
                 HeaderContent={
                     <View style={styles.containerHeader}>
-                        <TouchableOpacity onPress={()=>setanimateModal(true)} style={{width: 60, height:8, backgroundColor:'grey', borderRadius:45}}/>
+                        <TouchableOpacity onPress={() => setanimateModal(true)} style={{ width: 60, height: 8, backgroundColor: 'grey', borderRadius: 45 }} />
                     </View>
-                    }
-  onClose={() => {
-      setShowModelComment(false);
-      setanimateModal(false);
-  }}
-/>
+                }
+                onClose={() => {
+                    setShowModelComment(false);
+                    setanimateModal(false);
+                }}
+            />
         </View>
     );
 };
+
+const deviceWidth = Dimensions.get("window").width;
+const deviceHeight = Dimensions.get("window").height;
 
 const styles = StyleSheet.create({
     container: {
@@ -88,10 +89,10 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     containerContent: {
-        flex: 1, 
-        marginTop: deviceHeight/2,
+        flex: 1,
+        marginTop: deviceHeight / 2,
         justifyContent: 'flex-start',
-        backgroundColor:'white',
+        backgroundColor: 'white',
     },
     containerHeader: {
         flex: 1,
@@ -100,22 +101,21 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         height: 40,
         backgroundColor: '#F1F1F1',
-        marginTop: deviceHeight/2 - 40,
-        borderTopLeftRadius:25,
-        borderTopRightRadius:25,
+        marginTop: deviceHeight / 2 - 40,
+        borderTopLeftRadius: 25,
+        borderTopRightRadius: 25,
     },
-    headerContent:{
+    headerContent: {
         marginTop: 0,
-        
     },
     Modal: {
         // backgroundColor: '#005252',
         backgroundColor: 'rgba(0, 0, 0, 0)',
         marginTop: 0,
     }
-    });
+});
 
-  const TopTenData = [
+const TopTenData = [
     {
         id: 1,
         tag: '中式',

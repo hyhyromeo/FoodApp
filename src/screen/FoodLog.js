@@ -2,64 +2,19 @@ import React, { useState } from "react";
 import { StyleSheet, Text, View, Image, Dimensions, TouchableOpacity, Modal } from 'react-native';
 import Sample1 from './FoodLog/Sample1'
 import Sample2 from './FoodLog/Sample2'
+import FoodLogCard from "./FoodLogCard";
 
 export default function FoodLog() {
-    const [modalVisible, setModalVisible] = useState(false);
-    const [modalScreen, setModalScreen] = useState(<Sample1/>);
     return (
         <View style={styles.container}>
             <View style={styles.buttonWrap}>
-                <TouchableOpacity
-                    style={styles.button}
-                    onPress={() => {setModalScreen(<Sample1/>);setModalVisible(!modalVisible)}}
-                //onPress={() => navigation.navigate('All Resturant')}
-                >
-                    <Image
-                        style={{ width: '100%', height: '50%', borderRadius: 15, resizeMode: 'stretch' }}
-                        source={require('../../assets/icon/food-log-sample-1.jpg')}
-                    />
-                    <Text>5大越南Pho推介！灣仔米芝蓮推介名店、旺角區人氣牛柳牛丸粉</Text>
-                </TouchableOpacity>
-
-                <TouchableOpacity
-                    style={styles.button}
-                    onPress={() => {setModalScreen(<Sample2/>);setModalVisible(!modalVisible)}}
-                //onPress={() => navigation.navigate('Food Log')}
-                >
-                    <Image
-                        style={{ width: '100%', height: '50%', borderRadius: 15, resizeMode: 'stretch' }}
-                        source={require('../../assets/icon/food-log-sample-2.jpg')}
-                    />
-                    <Text>一年一度！全港4大榴槤放題/自助餐集合</Text>
-                </TouchableOpacity>
-
+                {tempData.map((temp, i) => (
+                    <FoodLogCard key={i} textContent={temp.textContent} img={temp.img} log={temp.log} />
+                ))}
             </View>
-            <Modal
-                animationType="slide"
-                transparent={true}
-                visible={modalVisible}
-                onRequestClose={() => {
-                    Alert.alert("Modal has been closed.");
-                    setModalVisible(!modalVisible);
-                }}
-            >
-                <View style={styles.modalView}>
-                    <TouchableOpacity
-                        style={styles.closeModal}
-                        onPress={() => {setModalVisible(!modalVisible)}}
-                    >
-                        <Image
-                            style={{ width: '100%', height: '100%', resizeMode: 'contain' }}
-                            source={require('../../assets/icon/close.png')}
-                        />
-                    </TouchableOpacity>
-                    {modalScreen}
-                </View>
-            </Modal>
         </View>
     )
 }
-
 
 const deviceWidth = Dimensions.get("window").width;
 const deviceHeight = Dimensions.get("window").height;
@@ -83,12 +38,6 @@ const styles = StyleSheet.create({
         height: deviceHeight * 0.18,
         margin: 10,
         borderRadius: 10,
-        // padding: 10,
-        // shadowColor: 'rgba(0,0,0, .4)',
-        // shadowOffset: { height: 1, width: 1 },
-        // shadowOpacity: 1.5,
-        // shadowRadius: 0.1,
-        // backgroundColor: '#fff',
     },
     modalView: {
         flex: 1,
@@ -97,7 +46,7 @@ const styles = StyleSheet.create({
         width: deviceWidth - 10,
         backgroundColor: "white",
         borderRadius: 20,
-        padding: 35,
+        padding: 45,
         alignItems: "center",
         alignContent: 'center',
         alignSelf: 'center',
@@ -113,11 +62,24 @@ const styles = StyleSheet.create({
     },
     closeModal: {
         width: 30, height: 30,
-        // backgroundColor: 'red',
-
         position: "absolute",
         left: 10,
         top: 10
-
     }
 });
+
+const tempData = [
+    {
+        // img: "https://www.eatthis.com/wp-content/uploads/sites/4/2022/05/steak-n-shake-7x7-steakburger.jpg?quality=82&strip=1&w=970",
+        img: require("../../assets/icon/food-log-sample-1.jpg"),
+        textContent: "5大越南Pho推介！灣仔米芝蓮推介名店、旺角區人氣牛柳牛丸粉",
+        log: <Sample1 />
+    },
+    {
+        // img: "https://www.refrigeratedfrozenfood.com/ext/resources/NEW_RD_Website/DefaultImages/default-pasta.jpg?1430942591",
+        img: require("../../assets/icon/food-log-sample-2.jpg"),
+        textContent: "一年一度！全港4大榴槤放題/自助餐集合",
+        log: <Sample2 />
+
+    }
+]

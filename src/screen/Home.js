@@ -3,11 +3,10 @@ import React, { useState, useEffect, useRef } from 'react';
 import { StyleSheet, View, Text, FlatList, ScrollView, Dimensions, Image, TouchableOpacity, Button, Linking, Modal } from 'react-native';
 import * as Location from 'expo-location';
 import { WebView } from 'react-native-webview';
-
+import { Modalize } from 'react-native-modalize';
 import Card from '../component/Card';
 import Header from '../component/Header';
 import Map from '../screen/Map';
-
 
 const ads = [
     {
@@ -25,26 +24,25 @@ const ads = [
     }
 ]
 
-const deviceWidth = Dimensions.get("window").width;
-const deviceHeight = Dimensions.get("window").height;
 
 const Home = ({ navigation }) => {
-    const [modalVisible, setModalVisible] = useState(false);
     const [url, setUrl] = useState('');
     const [urlOnChange, setUrlOnChange] = useState('');
     const [imgActive, setimgActive] = useState(0);
     const [location, setLocation] = useState(null);
     const [errorMsg, setErrorMsg] = useState(null);
     const sheetRef = useRef(null);
-    
+
+    const modalizeRef = useRef(null);
+    const onOpen = (e) => {
+        console.log(e);
+        setUrl(e);
+        modalizeRef.current?.open();
+    };
 
     onchange = (nativeEvent) => {
         if (nativeEvent) {
-            //console.log("nativeEvent:", nativeEvent);
-
             const slide = Math.ceil(nativeEvent.contentOffset.x / nativeEvent.layoutMeasurement.width);
-            //console.log("slide:", slide);
-
             if (slide != imgActive) {
                 setimgActive(slide);
             }
@@ -72,7 +70,7 @@ const Home = ({ navigation }) => {
     }
 
     return (
-        
+
         <View style={styles.container}>
             <StatusBar style="auto" />
             <View style={styles.wrapper}>
@@ -88,8 +86,7 @@ const Home = ({ navigation }) => {
                         ads.map((e, index) =>
                             <TouchableOpacity
                                 key={index}
-                                // onPress={() => Linking.openURL(e.url)}
-                                onPress={() => {setUrl(e.url); setModalVisible(!modalVisible)}}
+                                onPress={() => onOpen(e.url)}
                             >
                                 <Image
                                     resizeMode='stretch'
@@ -99,7 +96,9 @@ const Home = ({ navigation }) => {
                             </TouchableOpacity>
                         )
                     }
+
                 </ScrollView>
+
                 <View style={styles.wrapperDot}>
                     {
                         ads.map((e, index) =>
@@ -113,6 +112,16 @@ const Home = ({ navigation }) => {
                     }
                 </View>
             </View>
+            <Modalize modalHeight={800} snapPoint={800} ref={modalizeRef}>
+                <WebView
+
+                    source={{ uri: url }}
+                    style={{ width: deviceWidth - 10, margin: 10, height: deviceHeight - 150 }}
+                    onNavigationStateChange={setUrlOnChange.bind(this)}
+                    startInLoadingState={false}
+                />
+
+            </Modalize>
             <View style={styles.buttonWrap}>
                 <TouchableOpacity
                     style={styles.button}
@@ -149,56 +158,19 @@ const Home = ({ navigation }) => {
                     />
                 </TouchableOpacity>
             </View>
-            <Modal
-                animationType="slide"
-                transparent={true}
-                visible={modalVisible}
-                onRequestClose={() => {
-                    Alert.alert("Modal has been closed.");
-                    setModalVisible(!modalVisible);
-                }}
-                >
-                <View style={styles.modalView}>
-                    <TouchableOpacity
-                        style={styles.closeModal}
-                        onPress={() => setModalVisible(!modalVisible)}
-                        >
-                        <Image
-                            style={{ width: '100%', height: '100%', resizeMode: 'contain' }}
-                            source={require('../../assets/icon/close.png')}
-                            />
-                    </TouchableOpacity>
-                    <Text style={{position:'absolute', top: 15, fontSize: 20, flexWrap:'nowrap'}}>{urlOnChange.title}</Text>
-                    <WebView 
-                        source={ {uri: url }} 
-                        style={{width: deviceWidth-10, margin:10}}
-                        onNavigationStateChange={setUrlOnChange.bind(this)}
-                        // javaScriptEnabled = {true}
-                        // domStorageEnabled = {true}
-                        startInLoadingState={false}
-                        />
-                </View>
-            </Modal>
-
-            {/* <FlatList 
-                data={allItems} 
-                renderItem={({item}) => {
-                    return <Card info={item} />
-                }}
-                keyExtractor={(allItems) => allItems.id.toString()}
-                showsHorizontalScrollIndicator={false}
-            /> */}
         </View>
-        
+
     );
 };
+
+const deviceWidth = Dimensions.get("window").width;
+const deviceHeight = Dimensions.get("window").height;
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#fff',
         alignItems: 'center',
-        //justifyContent: 'center',
     },
     wrapper: {
         width: deviceWidth,

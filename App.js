@@ -2,7 +2,6 @@ import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, Image, Dimensions } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-
 import Home from './src/screen/Home';
 import Map from './src/screen/Map';
 import TopTen from './src/screen/TopTen';
@@ -22,8 +21,6 @@ function LogoTitle() {
         Logo
       </Text> */}
     </View>
-
-
   );
 }
 
@@ -35,16 +32,30 @@ const StackNavigator = (
       options={{
         headerTitle: (props) => <LogoTitle {...props} />,
         headerStyle: {
-          // backgroundColor: '#f4511e',
-          // padding:100
-
+          backgroundColor: "#FFA040",
         }
       }}
     />
-    <Stack.Screen name="Map" component={Map} />
-    <Stack.Screen name="Top 10" component={TopTen} />
-    <Stack.Screen name="Food Log" component={FoodLog} />
-    <Stack.Screen name="All Resturant" component={AllShop} />
+    <Stack.Screen options={{
+      headerStyle: {
+        backgroundColor: "#FFA040",
+      }
+    }} name="Map" component={Map} />
+    <Stack.Screen options={{
+      headerStyle: {
+        backgroundColor: "#FFA040",
+      }
+    }} name="Top 10" component={TopTen} />
+    <Stack.Screen options={{
+      headerStyle: {
+        backgroundColor: "#FFA040",
+      }
+    }} name="Food Log" component={FoodLog} />
+    <Stack.Screen options={{
+      headerStyle: {
+        backgroundColor: "#FFA040",
+      }
+    }} name="All Resturant" component={AllShop} />
   </Stack.Navigator>
 );
 
