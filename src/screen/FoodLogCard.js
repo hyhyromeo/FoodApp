@@ -7,15 +7,18 @@ export default function FoodLogCard(props) {
     return (
         <View style={styles.container}>
             <TouchableOpacity
-                style={styles.button}
+                style={props.horizontal ? styles.buttonHorizontal : styles.button}
                 onPress={() => { setModalScreen(props.log); setModalVisible(!modalVisible) }}
             >
                 {props.img && <Image
-                    style={{ width: '100%', height: '50%', borderRadius: 15, resizeMode: 'stretch' }}
+                    style={props.horizontal ? styles.imgHorizontal : styles.img}
                     source={props.img}
                 />}
-                <Text>{props.textContent}</Text>
+                <Text style={{ marginTop: 3, flex: 1, marginRight: 10 }}>{props.textContent}</Text>
             </TouchableOpacity>
+
+
+
             <Modal
                 animationType="slide"
                 transparent={true}
@@ -45,23 +48,42 @@ const deviceWidth = Dimensions.get("window").width;
 const deviceHeight = Dimensions.get("window").height;
 const styles = StyleSheet.create({
     container: {
-        margin: 5,
         backgroundColor: '#fff',
-        alignItems: 'center',
+        alignItems: 'flex-start',
         justifyContent: 'Top',
     },
     buttonWrap: {
-        marginTop: 10,
-        flexDirection: 'row'
+        flexDirection: 'row',
+        alignItems: "flex-start",
     },
     button: {
         flexDirection: "column",
-        alignContent: "flex-start",
-        alignItems: "flex-start",
         width: deviceWidth * 0.4,
-        height: deviceHeight * 0.18,
-        margin: 10,
+        height: deviceHeight * 0.15,
+        margin: 8,
+        marginHorizontal: 12,
         borderRadius: 10,
+
+    },
+    buttonHorizontal: {
+        flexDirection: "row",
+        width: deviceWidth - 15,
+        height: deviceHeight * 0.10,
+        marginHorizontal: 15,
+        borderRadius: 10,
+    },
+    img: {
+        width: '100%',
+        height: '65%',
+        borderRadius: 15,
+        resizeMode: 'stretch'
+    },
+    imgHorizontal: {
+        width: deviceWidth * 0.4,
+        height: '90%',
+        borderRadius: 15,
+        resizeMode: 'stretch',
+        marginRight: 15
     },
     modalView: {
         flex: 1,

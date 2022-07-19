@@ -40,7 +40,7 @@ const StackNavigator = (
       headerStyle: {
         backgroundColor: "#FFA040",
       }
-    }} name="Map" component={Map} />
+    }} name="地圖" component={Map} />
     <Stack.Screen options={{
       headerStyle: {
         backgroundColor: "#FFA040",
@@ -50,12 +50,12 @@ const StackNavigator = (
       headerStyle: {
         backgroundColor: "#FFA040",
       }
-    }} name="Food Log" component={FoodLog} />
+    }} name="飲食誌" component={FoodLog} />
     <Stack.Screen options={{
       headerStyle: {
         backgroundColor: "#FFA040",
       }
-    }} name="All Resturant" component={AllShop} />
+    }} name="所有餐廳" component={AllShop} />
   </Stack.Navigator>
 );
 
