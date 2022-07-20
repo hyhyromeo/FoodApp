@@ -16,15 +16,15 @@ import HomeButton2 from './HomeBotton2';
 
 const ads = [
     {
-        image: 'https://cdn.pixabay.com/photo/2022/01/03/01/57/airport-6911566_960_720.jpg',
+        image: require('../../assets/adv1modified.png'),
         url: 'https://google.com'
     },
     {
-        image: 'https://cdn.pixabay.com/photo/2017/03/23/09/34/artificial-intelligence-2167835_960_720.jpg',
+        image: require('../../assets/icon/placeholder-image.png'),
         url: 'https://youtube.com'
     },
     {
-        image: 'https://cdn.pixabay.com/photo/2016/09/07/10/04/education-1651259_960_720.jpg',
+        image: require('../../assets/icon/placeholder-image.png'),
         url: 'https://yahoo.com.hk'
 
     }
@@ -101,7 +101,7 @@ const Home = ({ navigation }) => {
                                 <Image
                                     resizeMode='stretch'
                                     style={styles.wrapper}
-                                    source={{ uri: e.image }}
+                                    source={e.image}
                                 />
                             </TouchableOpacity>
                         )
