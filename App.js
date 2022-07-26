@@ -1,5 +1,4 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, Image, Dimensions } from 'react-native';
+import { StyleSheet, View, Image, Dimensions } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Home from './src/screen/Home';
@@ -17,9 +16,6 @@ function LogoTitle() {
         style={{ width: '100%', height: 40, resizeMode: 'contain' }}
         source={require('./assets/icon/logo.png')}
       />
-      {/* <Text style={{marginLeft:5}}>
-        Logo
-      </Text> */}
     </View>
   );
 }
@@ -32,39 +28,51 @@ const StackNavigator = (
       options={{
         headerTitle: (props) => <LogoTitle {...props} />,
         headerStyle: {
-          backgroundColor: "#FFA040",
-        }
+          backgroundColor: '#FFA040',
+        },
       }}
     />
-    <Stack.Screen options={{
-      headerStyle: {
-        backgroundColor: "#FFA040",
-      }
-    }} name="地圖" component={Map} />
-    <Stack.Screen options={{
-      headerStyle: {
-        backgroundColor: "#FFA040",
-      }
-    }} name="Top 10" component={TopTen} />
-    <Stack.Screen options={{
-      headerStyle: {
-        backgroundColor: "#FFA040",
-      }
-    }} name="飲食誌" component={FoodLog} />
-    <Stack.Screen options={{
-      headerStyle: {
-        backgroundColor: "#FFA040",
-      }
-    }} name="所有餐廳" component={AllShop} />
+    <Stack.Screen
+      options={{
+        headerStyle: {
+          backgroundColor: '#FFA040',
+        },
+      }}
+      name="地圖"
+      component={Map}
+    />
+    <Stack.Screen
+      options={{
+        headerStyle: {
+          backgroundColor: '#FFA040',
+        },
+      }}
+      name="Top 10"
+      component={TopTen}
+    />
+    <Stack.Screen
+      options={{
+        headerStyle: {
+          backgroundColor: '#FFA040',
+        },
+      }}
+      name="飲食誌"
+      component={FoodLog}
+    />
+    <Stack.Screen
+      options={{
+        headerStyle: {
+          backgroundColor: '#FFA040',
+        },
+      }}
+      name="所有餐廳"
+      component={AllShop}
+    />
   </Stack.Navigator>
 );
 
 export default function App() {
-  return (
-    <NavigationContainer>
-      {StackNavigator}
-    </NavigationContainer>
-  );
+  return <NavigationContainer>{StackNavigator}</NavigationContainer>;
 }
 
 const styles = StyleSheet.create({
@@ -76,9 +84,9 @@ const styles = StyleSheet.create({
   },
   header: {
     //position: "relative",
-    width: Dimensions.get("window").width - 40,
-    justifyContent: "center",
+    width: Dimensions.get('window').width - 40,
+    justifyContent: 'center',
     flexDirection: 'row',
-    alignItems: 'center'
-  }
+    alignItems: 'center',
+  },
 });

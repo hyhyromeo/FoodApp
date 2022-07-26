@@ -12,7 +12,6 @@ export default function FoodLog() {
             <ScrollView style={{ paddingTop: 15, width: deviceWidth }} contentContainerStyle={{ alignItems: "center" }}>
                 <View style={styles.buttonWrap}>
                     {tempData.map((temp, i) => {
-                        console.log(i);
                         return <FoodLogCard key={i} textContent={temp.textContent} img={temp.img} log={temp.log} />
                     }
 
