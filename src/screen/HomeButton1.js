@@ -7,56 +7,60 @@ import {
   Image,
   TouchableOpacity,
 } from 'react-native';
-
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import {
+  faMapLocationDot,
+  faFireFlameCurved,
+} from '@fortawesome/free-solid-svg-icons';
 const HomeButton1 = ({ navigation, latitude, longitude, allShop }) => {
   return (
     <View style={styles.buttonWrap}>
       <TouchableOpacity
         style={styles.button}
         onPress={() => {
-          navigation.navigate('地圖', {
+          navigation.navigate('FoodNearBy', {
             Lat: latitude,
             Long: longitude,
           });
         }}
       >
         <View style={{ flex: 2, padding: 6 }}>
-          <Image
-            style={{ width: '100%', height: '100%', resizeMode: 'contain' }}
-            source={require('../../assets/icon/map.png')}
+          <FontAwesomeIcon
+            style={{ color: 'lightblue' }}
+            icon={faMapLocationDot}
+            size={50}
           />
         </View>
-        <View style={{ flex: 3 }}>
+        <View style={{ flex: 4 }}>
           <Text
             style={{
-              paddingLeft: 10,
               fontSize: 20,
-              fontWeight: 'bold',
+              // fontWeight: 'bold',
             }}
           >
-            地圖
+            FoodNearBy
           </Text>
         </View>
       </TouchableOpacity>
       <TouchableOpacity
         style={styles.button}
-        onPress={() => navigation.navigate('Top 10')}
+        onPress={() => navigation.navigate('Top 10 Rating')}
       >
         <View style={{ flex: 2, padding: 6 }}>
-          <Image
-            style={{ width: '100%', height: '100%', resizeMode: 'contain' }}
-            source={require('../../assets/icon/crownai.png')}
+          <FontAwesomeIcon
+            style={{ color: 'lightblue' }}
+            icon={faFireFlameCurved}
+            size={50}
           />
         </View>
-        <View style={{ flex: 3 }}>
+        <View style={{ flex: 4 }}>
           <Text
             style={{
-              paddingLeft: 10,
               fontSize: 20,
-              fontWeight: 'bold',
+              // fontWeight: 'bold',
             }}
           >
-            Top 10
+            Top 10 Rating
           </Text>
         </View>
       </TouchableOpacity>

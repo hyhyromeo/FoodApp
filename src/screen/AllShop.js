@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import {
   SafeAreaView,
   StyleSheet,
@@ -12,11 +12,12 @@ import * as _ from 'lodash';
 import Card from '../component/Card';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons/faMagnifyingGlass';
-import axios from 'axios';
+import { ShopContext } from '../../context/ShopContext';
 
 export default function AllShop() {
+  const { shop } = useContext(ShopContext);
   const [search, setSearch] = useState('');
-  const [allShopData, setAllShopData] = useState();
+  const [allShopData, setAllShopData] = useState(shop);
   const [filteredDataSource, setFilteredDataSource] = useState();
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState(null);
@@ -24,27 +25,18 @@ export default function AllShop() {
   const [tags, setTags] = useState([]);
 
   useEffect(() => {
-    fetchApiData();
+    getData();
   }, []);
 
-  const fetchApiData = async () => {
-    await axios
-      .get('http://10.1.20.143:3000/allShop')
-      .then((res) => {
-        setTags(
-          _.unionBy(res.data, res.data, 'tag').map((item) => {
-            const temp = { label: item.tag, value: item.tag };
-            return temp;
-          })
-        );
-        setAllShopData(res.data);
-        setFilteredDataSource(res.data);
-
-        return res.data;
+  const getData = () => {
+    setTags(
+      _.unionBy(shop, shop, 'tag').map((item) => {
+        const temp = { label: item.tag, value: item.tag };
+        return temp;
       })
-      .catch((error) => {
-        return error.message;
-      });
+    );
+    setAllShopData(shop);
+    setFilteredDataSource(shop);
   };
 
   const searchFilterFunction = (text) => {
@@ -106,73 +98,64 @@ export default function AllShop() {
   };
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
-      <View style={styles.container}>
-        <View style={styles.filter}>
-          <View style={{ position: 'relative' }}>
-            {!search && (
-              <FontAwesomeIcon
-                style={styles.searchIcon}
-                icon={faMagnifyingGlass}
-                size={20}
-              />
-            )}
-            <TextInput
-              style={styles.textInputStyle}
-              onChangeText={(text) => {
-                searchFilterFunction(text);
-              }}
-              value={search}
-              underlineColorAndroid="transparent"
-              placeholder={`搜尋`}
+    <View style={styles.container}>
+      <View style={styles.filter}>
+        <View style={styles.searchWrap}>
+          {!search && (
+            <FontAwesomeIcon
+              style={styles.searchIcon}
+              icon={faMagnifyingGlass}
+              size={20}
             />
-          </View>
-
-          <View>
-            <DropDownPicker
-              style={styles.dropdown}
-              placeholder="分類"
-              dropDownContainerStyle={{
-                width: deviceWidth / 2 - 80,
-                marginHorizontal: 15,
-                marginTop: -10,
-                borderWidth: 0,
-                backgroundColor: '#fff',
-                shadowOpacity: 0.6,
-                shadowRadius: 2,
-                shadowOffset: { width: 3, height: 4 },
-                overflow: 'visible',
-              }}
-              onChangeValue={(text) => {
-                sortFilterFunction(text);
-              }}
-              open={open}
-              value={value}
-              items={tags}
-              setOpen={setOpen}
-              setValue={setValue}
-              setItems={setTags}
-            />
-          </View>
-        </View>
-
-        {allShopData && (
-          <FlatList
-            style={{
-              paddingHorizontal: 10,
-              marginTop: 10,
+          )}
+          <TextInput
+            style={styles.textInputStyle}
+            onChangeText={(text) => {
+              searchFilterFunction(text);
             }}
-            contentContainerStyle={{ paddingBottom: 200 }}
-            data={filteredDataSource}
-            renderItem={({ item, i }) => {
-              return <Card key={i} info={item} />;
-            }}
-            keyExtractor={(allShopData) => allShopData.id}
-            showsHorizontalScrollIndicator={false}
+            value={search}
+            underlineColorAndroid="transparent"
+            placeholder={`搜尋`}
           />
-        )}
+        </View>
+        <View
+          style={{
+            width: '30%',
+          }}
+        >
+          <DropDownPicker
+            style={styles.dropdown}
+            placeholder="分類"
+            dropDownContainerStyle={styles.dropDownContainer}
+            onChangeValue={(text) => {
+              sortFilterFunction(text);
+            }}
+            open={open}
+            value={value}
+            items={tags}
+            setOpen={setOpen}
+            setValue={setValue}
+            setItems={setTags}
+          />
+        </View>
       </View>
-    </SafeAreaView>
+
+      {allShopData && (
+        <FlatList
+          style={{
+            paddingHorizontal: 10,
+            marginTop: 10,
+          }}
+          contentContainerStyle={{ paddingBottom: 200 }}
+          data={filteredDataSource}
+          renderItem={({ item, i }) => {
+            return <Card key={i} info={item} />;
+          }}
+          keyExtractor={(allShopData) => allShopData.id}
+          showsHorizontalScrollIndicator={false}
+        />
+      )}
+    </View>
   );
 }
 
@@ -181,13 +164,17 @@ const deviceHeight = Dimensions.get('window').height;
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#fff',
+    backgroundColor: '#F9F9F9',
     alignItems: 'center',
     justifyContent: 'center',
   },
+  searchWrap: {
+    position: 'relative',
+    width: '65%',
+    marginRight: 15,
+  },
   textInputStyle: {
     height: 50,
-    width: deviceWidth / 2,
     borderRadius: 10,
     borderWidth: 0,
     paddingLeft: 20,
@@ -199,8 +186,6 @@ const styles = StyleSheet.create({
   },
   dropdown: {
     marginTop: -10,
-    width: deviceWidth / 2 - 80,
-    marginHorizontal: 15,
     height: 40,
     borderWidth: 0,
     borderRadius: 10,
@@ -210,13 +195,24 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 2 },
     elevation: 9,
   },
+  dropDownContainer: {
+    marginTop: -10,
+    borderWidth: 1,
+    borderColor: 'lightgrey',
+    backgroundColor: '#fff',
+    shadowOpacity: 0.6,
+    shadowRadius: 2,
+    shadowOffset: { width: 3, height: 4 },
+    overflow: 'visible',
+  },
   filter: {
     flexDirection: 'row',
-    width: deviceWidth - 10,
+    width: deviceWidth - 20,
     zIndex: 1,
     justifyContent: 'center',
     alignItems: 'center',
     marginTop: 10,
+    paddingHorizontal: 5,
   },
   searchIcon: {
     position: 'absolute',

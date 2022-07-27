@@ -10,14 +10,14 @@ export default function TopTenCard({ shop }) {
       <View
         style={{
           width: deviceWidth,
-          backgroundColor: '#FFA040',
+          backgroundColor: 'lightblue',
           borderTopLeftRadius: 10,
           borderTopRightRadius: 10,
         }}
       >
         <Text
           style={{
-            fontWeight: 'bold',
+            // fontWeight: 'bold',
             fontSize: 32,
             margin: 5,
             textAlign: 'center',
@@ -36,15 +36,9 @@ export default function TopTenCard({ shop }) {
         }}
       />
       <View style={{ margin: 15 }}>
-        <Text style={{ fontWeight: 'bold', fontSize: 22, margin: 5 }}>
-          評分: {shop.rating}
-        </Text>
-        <Text style={{ fontWeight: 'bold', fontSize: 22, margin: 5 }}>
-          類別: {shop.tag}
-        </Text>
-        <Text style={{ fontWeight: 'bold', fontSize: 22, margin: 5 }}>
-          地址: {shop.location}
-        </Text>
+        <Text style={{ fontSize: 22, margin: 5 }}>評分: {shop.rating}</Text>
+        <Text style={{ fontSize: 22, margin: 5 }}>類別: {shop.tag}</Text>
+        <Text style={{ fontSize: 22, margin: 5 }}>地址: {shop.location}</Text>
       </View>
 
       <View style={{ alignItems: 'center' }}>

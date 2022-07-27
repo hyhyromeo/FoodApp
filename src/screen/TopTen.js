@@ -3,37 +3,17 @@ import { StyleSheet, View, Text, Dimensions } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { DataTable } from 'react-native-paper';
 import { Modalize } from 'react-native-modalize';
-import axios from 'axios';
 import TopTenCard from '../component/TopTenCard';
 import * as _ from 'lodash';
-
-const optionsPerPage = [2, 3, 4];
-
+import { useContext } from 'react';
+import { ShopContext } from '../../context/ShopContext';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import { faStar } from '@fortawesome/free-solid-svg-icons';
 export default function TopTen() {
-  const [page, setPage] = useState(0);
-  const [itemsPerPage, setItemsPerPage] = useState(optionsPerPage[0]);
   const [selectedShop, setSelectedShop] = useState();
   const modalizeRef = useRef(null);
-  const [allShopData, setAllShopData] = useState();
-
-  useEffect(() => {
-    fetchApiData();
-  }, []);
-
-  const fetchApiData = async () => {
-    await axios
-      .get('http://10.1.20.143:3000/allShop')
-      .then((res) => {
-        setAllShopData(res.data);
-      })
-      .catch((err) => {
-        console.log(err.message);
-      });
-  };
-
-  useEffect(() => {
-    setPage(0);
-  }, [itemsPerPage]);
+  const { shop } = useContext(ShopContext);
+  const [allShopData, setAllShopData] = useState(shop);
 
   const onOpen = (shopDetail) => {
     setSelectedShop(shopDetail);
@@ -43,16 +23,16 @@ export default function TopTen() {
     <View style={styles.container}>
       <DataTable>
         <DataTable.Header>
-          <DataTable.Title style={{ flex: 1, justifyContent: 'center' }}>
+          <DataTable.Title style={styles.rank}>
             <Text style={styles.title}>Rank</Text>
           </DataTable.Title>
-          <DataTable.Title style={{ flex: 3, paddingLeft: 10 }}>
+          <DataTable.Title style={styles.name}>
             <Text style={styles.title}>Name</Text>
           </DataTable.Title>
-          <DataTable.Title style={{ justifyContent: 'center' }}>
+          <DataTable.Title style={styles.cat_and_rating}>
             <Text style={styles.title}>Category</Text>
           </DataTable.Title>
-          <DataTable.Title style={{ justifyContent: 'center' }}>
+          <DataTable.Title style={styles.cat_and_rating}>
             <Text style={styles.title}>Rating</Text>
           </DataTable.Title>
         </DataTable.Header>
@@ -68,17 +48,29 @@ export default function TopTen() {
               }}
             >
               <DataTable.Row>
-                <DataTable.Cell style={{ flex: 1, justifyContent: 'center' }}>
-                  {key + 1}
-                </DataTable.Cell>
-                <DataTable.Cell style={{ flex: 3, paddingLeft: 10 }}>
+                <DataTable.Cell style={styles.rank}>{key + 1}</DataTable.Cell>
+                <DataTable.Cell style={styles.cell_name}>
                   {item.name}
                 </DataTable.Cell>
-                <DataTable.Cell style={{ justifyContent: 'center' }}>
+                <DataTable.Cell style={styles.cat_and_rating}>
                   {item.tag}
                 </DataTable.Cell>
-                <DataTable.Cell style={{ justifyContent: 'center' }}>
-                  {item.rating}
+                <DataTable.Cell style={styles.cat_and_rating}>
+                  <View
+                    style={{
+                      alignItems: 'center',
+                      flexDirection: 'row',
+                    }}
+                  >
+                    <FontAwesomeIcon
+                      style={{
+                        color: 'lightblue',
+                      }}
+                      icon={faStar}
+                      size={20}
+                    />
+                    <Text> : {item.rating}</Text>
+                  </View>
                 </DataTable.Cell>
               </DataTable.Row>
             </TouchableOpacity>
@@ -101,11 +93,26 @@ const deviceHeight = Dimensions.get('window').height;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#F9F9F9',
     alignItems: 'center',
   },
   title: {
     fontWeight: 'bold',
     fontSize: 15,
+  },
+  rank: {
+    flex: 1,
+    justifyContent: 'center',
+  },
+  name: {
+    flex: 3,
+    paddingLeft: 10,
+  },
+  cat_and_rating: {
+    justifyContent: 'center',
+  },
+  cell_name: {
+    flex: 3,
+    paddingLeft: 10,
   },
 });

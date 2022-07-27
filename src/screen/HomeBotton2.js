@@ -7,7 +7,8 @@ import {
   Image,
   TouchableOpacity,
 } from 'react-native';
-
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import { faUtensils, faFileSignature } from '@fortawesome/free-solid-svg-icons';
 const HomeButton2 = ({ navigation }) => {
   return (
     <View style={styles.buttonWrap}>
@@ -16,43 +17,44 @@ const HomeButton2 = ({ navigation }) => {
         onPress={() => navigation.navigate('所有餐廳')}
       >
         <View style={{ flex: 2, padding: 6 }}>
-          <Image
-            style={{ width: '100%', height: '100%', resizeMode: 'contain' }}
-            source={require('../../assets/icon/restaurant.png')}
+          <FontAwesomeIcon
+            style={{ color: 'lightblue' }}
+            icon={faUtensils}
+            size={50}
           />
         </View>
-        <View style={{ flex: 3 }}>
+        <View style={{ flex: 4 }}>
           <Text
             style={{
-              paddingLeft: 10,
               fontSize: 20,
-              fontWeight: 'bold',
+              // fontWeight: 'bold',
             }}
           >
-            所有餐廳
+            All Restaurant
           </Text>
         </View>
       </TouchableOpacity>
       <TouchableOpacity
         style={styles.button}
-        onPress={() => navigation.navigate('飲食誌')}
+        onPress={() => navigation.navigate('FoodLogs')}
       >
-        <View style={{ flex: 2, padding: 6 }}>
-          <Image
-            style={{ width: '100%', height: '100%', resizeMode: 'contain' }}
-            source={require('../../assets/icon/fork-logo.png')}
+        <View style={{ flex: 2, marginLeft: 10, padding: 6 }}>
+          <FontAwesomeIcon
+            style={{ color: 'lightblue' }}
+            icon={faFileSignature}
+            size={50}
           />
         </View>
 
-        <View style={{ flex: 3 }}>
+        <View style={{ flex: 4 }}>
           <Text
             style={{
-              paddingLeft: 10,
               fontSize: 20,
-              fontWeight: 'bold',
+              paddingLeft: 10,
+              // fontWeight: 'bold',
             }}
           >
-            飲食誌
+            FoodLogs
           </Text>
         </View>
       </TouchableOpacity>

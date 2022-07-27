@@ -11,7 +11,8 @@ import MapView, { Marker, Callout } from 'react-native-maps';
 import * as Location from 'expo-location';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faLocationArrow } from '@fortawesome/free-solid-svg-icons/faLocationArrow';
-import axios from 'axios';
+import { useContext } from 'react';
+import { ShopContext } from '../../context/ShopContext';
 
 const DefaultRegion = {
   latitude: 35.6762,
@@ -22,23 +23,11 @@ const DefaultRegion = {
 export default function Map(route) {
   const mapRef = useRef(null);
   const [currentRegion, setCurrentRegion] = useState(DefaultRegion);
-  const [allShopData, setAllShopData] = useState();
-
+  const { shop } = useContext(ShopContext);
+  const [allShopData, setAllShopData] = useState(shop);
   useEffect(() => {
-    fetchApiData();
     setCoords();
   }, []);
-
-  const fetchApiData = async () => {
-    await axios
-      .get('http://10.1.20.143:3000/allShop')
-      .then((res) => {
-        setAllShopData(res.data);
-      })
-      .catch((err) => {
-        console.log(err.message);
-      });
-  };
 
   const getCoords = () => {
     mapRef.current.animateToRegion(currentRegion, 2 * 1000);

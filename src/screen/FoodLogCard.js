@@ -63,7 +63,7 @@ const deviceWidth = Dimensions.get('window').width;
 const deviceHeight = Dimensions.get('window').height;
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#fff',
+    backgroundColor: '#F9F9F9',
     alignItems: 'flex-start',
     justifyContent: 'Top',
   },
@@ -85,6 +85,7 @@ const styles = StyleSheet.create({
     height: deviceHeight * 0.1,
     marginHorizontal: 15,
     borderRadius: 10,
+    margin: 8,
   },
   img: {
     width: '100%',

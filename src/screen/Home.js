@@ -18,6 +18,9 @@ import Sample1 from './FoodLog/Sample1';
 import Sample2 from './FoodLog/Sample2';
 import HomeButton1 from './HomeButton1';
 import HomeButton2 from './HomeBotton2';
+import { useContext } from 'react';
+import { ShopContext } from '../../context/ShopContext';
+
 const ads = [
   {
     image: require('../../assets/adv1modified.png'),
@@ -39,12 +42,27 @@ const Home = ({ navigation }) => {
   const [imgActive, setimgActive] = useState(0);
   const [location, setLocation] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
-
+  const { banner } = useContext(ShopContext);
   let flag = false;
+  useEffect(() => {
+    getLocation();
+  }, []);
+  async function getLocation() {
+    let { status } = await Location.requestForegroundPermissionsAsync();
+
+    if (status !== 'granted') {
+      setErrorMsg('Permission to access location was denied');
+      return;
+    }
+    let location = await Location.getCurrentPositionAsync({
+      accuracy: Location.Accuracy.Balanced,
+      maximumAge: 5000,
+    });
+    setLocation(location);
+  }
   if (location) {
     flag = true;
   }
-
   const modalizeRef = useRef(null);
   const onOpen = (e) => {
     setUrl(e);
@@ -61,22 +79,6 @@ const Home = ({ navigation }) => {
     }
   };
 
-  useEffect(() => {
-    (async () => {
-      let { status } = await Location.requestForegroundPermissionsAsync();
-      if (status !== 'granted') {
-        setErrorMsg('Permission to access location was denied');
-        return;
-      }
-
-      let location = await Location.getCurrentPositionAsync({
-        accuracy: Location.Accuracy.Balanced,
-        maximumAge: 5000,
-      });
-      setLocation(location);
-    })();
-  }, []);
-
   return (
     <View style={styles.container}>
       <StatusBar style="auto" />
@@ -89,26 +91,28 @@ const Home = ({ navigation }) => {
           horizontal
           style={styles.wrapper}
         >
-          {ads.map((e, index) => (
-            <TouchableOpacity key={index} onPress={() => onOpen(e.url)}>
-              <Image
-                resizeMode="stretch"
-                style={styles.wrapper}
-                source={e.image}
-              />
-            </TouchableOpacity>
-          ))}
+          {banner.length > 1 &&
+            banner.map((e, index) => (
+              <TouchableOpacity key={index} onPress={() => onOpen(e.url)}>
+                <Image
+                  resizeMode="cover"
+                  style={styles.wrapper}
+                  source={{ uri: e.image }}
+                />
+              </TouchableOpacity>
+            ))}
         </ScrollView>
 
         <View style={styles.wrapperDot}>
-          {ads.map((e, index) => (
-            <Text
-              key={index}
-              style={imgActive === index ? styles.dotActive : styles.dot}
-            >
-              ●
-            </Text>
-          ))}
+          {banner.length > 1 &&
+            banner.map((e, index) => (
+              <Text
+                key={index}
+                style={imgActive === index ? styles.dotActive : styles.dot}
+              >
+                ●
+              </Text>
+            ))}
         </View>
       </View>
       <Modalize
@@ -123,7 +127,6 @@ const Home = ({ navigation }) => {
           startInLoadingState={false}
         />
       </Modalize>
-
       {flag && (
         <HomeButton1
           navigation={navigation}
@@ -131,7 +134,6 @@ const Home = ({ navigation }) => {
           longitude={location.coords.longitude}
         />
       )}
-
       <HomeButton2 navigation={navigation} />
       <View>
         <Text
@@ -140,13 +142,12 @@ const Home = ({ navigation }) => {
             textAlign: 'left',
             marginTop: 15,
             width: deviceWidth - 25,
-            fontWeight: 'bold',
+            // fontWeight: 'bold',
           }}
         >
-          飲食誌
+          Latest Logs
         </Text>
       </View>
-
       <View
         style={{ paddingTop: 10, width: deviceWidth }}
         contentContainerStyle={{ alignItems: 'center' }}
@@ -173,7 +174,7 @@ const deviceHeight = Dimensions.get('window').height;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#F9F9F9',
     alignItems: 'center',
   },
   wrapper: {
@@ -252,13 +253,15 @@ const tempData = [
   {
     // img: "https://www.eatthis.com/wp-content/uploads/sites/4/2022/05/steak-n-shake-7x7-steakburger.jpg?quality=82&strip=1&w=970",
     img: require('../../assets/icon/food-log-sample-1.jpg'),
-    textContent: '5大越南Pho推介！灣仔米芝蓮推介名店、旺角區人氣牛柳牛丸粉',
+    textContent:
+      '5大越南Pho推介！灣仔米芝蓮推介名店、旺角區人氣牛柳牛丸粉 講到pho絕對係最代表越南菜嘅其中一種菜式，湯底主要用牛骨熬製而成，配上河粉、牛肉或雞絲，並佐以生芽菜、香葉、青...',
     log: <Sample1 />,
   },
   {
     // img: "https://www.refrigeratedfrozenfood.com/ext/resources/NEW_RD_Website/DefaultImages/default-pasta.jpg?1430942591",
     img: require('../../assets/icon/food-log-sample-2.jpg'),
-    textContent: '一年一度！全港4大榴槤放題/自助餐集合',
+    textContent:
+      '一年一度！全港4大榴槤放題/自助餐集合 榴槤控等足一年，終於又等到榴槤當造嘅時間啦。有酒店、餐廳甚至農莊都趁住呢段時間，推出榴槤放題或自助餐！榴槤控可以放任...',
     log: <Sample2 />,
   },
 ];

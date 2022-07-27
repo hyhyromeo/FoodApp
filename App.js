@@ -6,7 +6,9 @@ import Map from './src/screen/Map';
 import TopTen from './src/screen/TopTen';
 import FoodLog from './src/screen/FoodLog';
 import AllShop from './src/screen/AllShop';
-
+import React from 'react';
+import { ShopContext, ShopContextProvider } from './context/ShopContext';
+import { useContext } from 'react';
 const Stack = createNativeStackNavigator();
 
 function LogoTitle() {
@@ -19,60 +21,67 @@ function LogoTitle() {
     </View>
   );
 }
-
-const StackNavigator = (
-  <Stack.Navigator>
-    <Stack.Screen
-      name="Home"
-      component={Home}
-      options={{
-        headerTitle: (props) => <LogoTitle {...props} />,
-        headerStyle: {
-          backgroundColor: '#FFA040',
-        },
-      }}
-    />
-    <Stack.Screen
-      options={{
-        headerStyle: {
-          backgroundColor: '#FFA040',
-        },
-      }}
-      name="地圖"
-      component={Map}
-    />
-    <Stack.Screen
-      options={{
-        headerStyle: {
-          backgroundColor: '#FFA040',
-        },
-      }}
-      name="Top 10"
-      component={TopTen}
-    />
-    <Stack.Screen
-      options={{
-        headerStyle: {
-          backgroundColor: '#FFA040',
-        },
-      }}
-      name="飲食誌"
-      component={FoodLog}
-    />
-    <Stack.Screen
-      options={{
-        headerStyle: {
-          backgroundColor: '#FFA040',
-        },
-      }}
-      name="所有餐廳"
-      component={AllShop}
-    />
-  </Stack.Navigator>
-);
-
+const StackNavigator = () => {
+  const { theme } = useContext(ShopContext);
+  return (
+    <Stack.Navigator>
+      <Stack.Screen
+        name="FoodApp :D"
+        component={Home}
+        options={{
+          // headerTitle: (props) => <LogoTitle {...props} />,
+          headerStyle: {
+            backgroundColor: theme,
+          },
+        }}
+      />
+      <Stack.Screen
+        options={{
+          headerStyle: {
+            backgroundColor: theme,
+          },
+        }}
+        name="FoodNearBy"
+        component={Map}
+      />
+      <Stack.Screen
+        options={{
+          headerStyle: {
+            backgroundColor: theme,
+          },
+        }}
+        name="Top 10 Rating"
+        component={TopTen}
+      />
+      <Stack.Screen
+        options={{
+          headerStyle: {
+            backgroundColor: theme,
+          },
+        }}
+        name="FoodLogs"
+        component={FoodLog}
+      />
+      <Stack.Screen
+        options={{
+          headerStyle: {
+            backgroundColor: theme,
+          },
+        }}
+        name="所有餐廳"
+        component={AllShop}
+      />
+    </Stack.Navigator>
+  );
+};
 export default function App() {
-  return <NavigationContainer>{StackNavigator}</NavigationContainer>;
+  return (
+    <ShopContextProvider>
+      <NavigationContainer>
+        <StackNavigator />
+      </NavigationContainer>
+    </ShopContextProvider>
+  );
 }
 
 const styles = StyleSheet.create({
