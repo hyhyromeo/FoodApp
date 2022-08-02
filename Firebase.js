@@ -1,6 +1,8 @@
-import { initializeApp } from 'firebase/app';
 import 'firebase/firestore';
+import { initializeApp } from 'firebase/app';
 import { getFirestore, collection, getDocs } from 'firebase/firestore';
+import * as firebase from 'firebase/app';
+import { getAuth } from 'firebase/auth';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyAnxbQ2WL2KFMZpgfzLojlliGmI6C3_49A',
@@ -11,6 +13,8 @@ const firebaseConfig = {
   appId: '1:138548656160:web:54fe4ca50bc031b21fa445',
   measurementId: 'G-PH3RM4R5CZ',
 };
+export const app = initializeApp(firebaseConfig);
+export const auth = getAuth(app);
 
 export async function getShops(table) {
   const db = getFirestore(app);
@@ -19,5 +23,3 @@ export async function getShops(table) {
   const dataList = dataSnapshot.docs.map((doc) => doc.data());
   return dataList;
 }
-
-export const app = initializeApp(firebaseConfig);

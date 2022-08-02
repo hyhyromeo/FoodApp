@@ -7,6 +7,7 @@ import {
   ScrollView,
   Dimensions,
   Image,
+  Linking,
   TouchableOpacity,
 } from 'react-native';
 import * as Location from 'expo-location';
@@ -20,21 +21,7 @@ import HomeButton1 from './HomeButton1';
 import HomeButton2 from './HomeBotton2';
 import { useContext } from 'react';
 import { ShopContext } from '../../context/ShopContext';
-
-const ads = [
-  {
-    image: require('../../assets/adv1modified.png'),
-    url: 'https://google.com',
-  },
-  {
-    image: require('../../assets/icon/placeholder-image.png'),
-    url: 'https://youtube.com',
-  },
-  {
-    image: require('../../assets/icon/placeholder-image.png'),
-    url: 'https://yahoo.com.hk',
-  },
-];
+import { auth } from '../../Firebase';
 
 const Home = ({ navigation }) => {
   const [url, setUrl] = useState('');
@@ -78,10 +65,41 @@ const Home = ({ navigation }) => {
       }
     }
   };
-
+  const handleSignOut = () => {
+    auth
+      .signOut()
+      .then(navigation.replace('FoodApp Login'))
+      .catch((err) => alert(err.message));
+  };
   return (
     <View style={styles.container}>
       <StatusBar style="auto" />
+      <View
+        style={{
+          flex: 1,
+          paddingHorizontal: 20,
+          width: deviceWidth,
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          flexDirection: 'row',
+        }}
+      >
+        <Text>Email: {auth.currentUser?.email}</Text>
+        <TouchableOpacity
+          style={{
+            backgroundColor: '#0782F9',
+            width: '25%',
+            padding: 15,
+            borderRadius: 10,
+            alignItems: 'center',
+          }}
+          onPress={handleSignOut}
+        >
+          <Text style={{ color: 'white', fontWeight: '700', fontSize: 16 }}>
+            Sign Out
+          </Text>
+        </TouchableOpacity>
+      </View>
       <View style={styles.wrapper}>
         <ScrollView
           onScroll={({ nativeEvent }) => onchange(nativeEvent)}

@@ -1,14 +1,15 @@
 import { StyleSheet, View, Image, Dimensions } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import LoginScreen from './src/screen/LoginScreen';
 import Home from './src/screen/Home';
 import Map from './src/screen/Map';
 import TopTen from './src/screen/TopTen';
 import FoodLog from './src/screen/FoodLog';
 import AllShop from './src/screen/AllShop';
-import React from 'react';
 import { ShopContext, ShopContextProvider } from './context/ShopContext';
 import { useContext } from 'react';
+
 const Stack = createNativeStackNavigator();
 
 function LogoTitle() {
@@ -25,6 +26,16 @@ const StackNavigator = () => {
   const { theme } = useContext(ShopContext);
   return (
     <Stack.Navigator>
+      <Stack.Screen
+        name="FoodApp Login"
+        component={LoginScreen}
+        options={{
+          // headerTitle: (props) => <LogoTitle {...props} />,
+          headerStyle: {
+            backgroundColor: theme,
+          },
+        }}
+      />
       <Stack.Screen
         name="FoodApp :D"
         component={Home}

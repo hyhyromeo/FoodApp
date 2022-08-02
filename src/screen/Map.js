@@ -6,8 +6,9 @@ import {
   Dimensions,
   Image,
   TouchableOpacity,
+  Linking,
 } from 'react-native';
-import MapView, { Marker, Callout } from 'react-native-maps';
+import MapView, { Marker, Callout, PROVIDER_GOOGLE } from 'react-native-maps';
 import * as Location from 'expo-location';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faLocationArrow } from '@fortawesome/free-solid-svg-icons/faLocationArrow';
@@ -48,6 +49,7 @@ export default function Map(route) {
   return (
     <View style={styles.container}>
       <MapView
+        provider={PROVIDER_GOOGLE}
         ref={mapRef}
         style={styles.map}
         initialRegion={{
@@ -80,7 +82,34 @@ export default function Map(route) {
                     <Text style={styles.name}>{item.name}</Text>
                     <Text>{item.location}</Text>
                     <Image style={styles.image} source={{ uri: item.image }} />
+                    <TouchableOpacity
+                      style={{
+                        margin: 20,
+                        backgroundColor: '#0782F9',
+                        width: '80%',
+                        padding: 15,
+                        borderRadius: 10,
+                        alignItems: 'center',
+                      }}
+                      onPress={() => {
+                        console.log('123123123');
+                        Linking.openURL(
+                          'https://www.google.com/maps/dir/?api=1&origin=&destination=22.30678960858985, 114.23265417290528'
+                        );
+                      }}
+                    >
+                      <Text
+                        style={{
+                          color: 'white',
+                          fontWeight: '700',
+                          fontSize: 16,
+                        }}
+                      >
+                        Map Map
+                      </Text>
+                    </TouchableOpacity>
                   </View>
+
                   <View style={styles.arrowBorder} />
                   <View style={styles.arrow} />
                 </View>

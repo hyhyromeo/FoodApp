@@ -1,5 +1,13 @@
 import React from 'react';
-import { StyleSheet, View, Text, Dimensions, Image } from 'react-native';
+import {
+  StyleSheet,
+  View,
+  Text,
+  Dimensions,
+  Image,
+  TouchableOpacity,
+  Linking,
+} from 'react-native';
 import IconLabel from './IconLabel';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faStar } from '@fortawesome/free-solid-svg-icons';
@@ -30,19 +38,35 @@ const Card = ({ info }) => {
             icon={faStar}
             size={20}
           />
-          <Text
-            style={
-              {
-                // justifyContent: 'flex-end',
-                // textAlign: 'center',
-              }
-            }
-          >
-            : {info.rating}
-          </Text>
+          <Text>: {info.rating}</Text>
         </View>
         <Text style={styles.tagStyle}>{info.tag}</Text>
         <IconLabel location={info.location} />
+        <TouchableOpacity
+          style={{
+            backgroundColor: '#0782F9',
+            width: '20%',
+            padding: 15,
+            borderRadius: 10,
+            alignItems: 'center',
+          }}
+          onPress={() => {
+            console.log('123123123');
+            Linking.openURL(
+              `https://www.google.com/maps/dir/?api=1&origin=&destination=${info.lat}, ${info.long}`
+            );
+          }}
+        >
+          <Text
+            style={{
+              color: 'white',
+              fontWeight: '700',
+              fontSize: 16,
+            }}
+          >
+            Map Map
+          </Text>
+        </TouchableOpacity>
       </View>
     </View>
   );
