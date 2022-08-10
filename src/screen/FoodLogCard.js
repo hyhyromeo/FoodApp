@@ -22,10 +22,20 @@ export default function FoodLogCard(props) {
         }}
       >
         {props.img && (
-          <Image
-            style={props.horizontal ? styles.imgHorizontal : styles.img}
-            source={props.img}
-          />
+          <View
+            style={{
+              shadowColor: 'rgba(0,0,0, .4)',
+              shadowOffset: { height: 1, width: 1 },
+              shadowOpacity: 1.5,
+              shadowRadius: 3.5,
+              height: 90,
+            }}
+          >
+            <Image
+              style={props.horizontal ? styles.imgHorizontal : styles.img}
+              source={props.img}
+            />
+          </View>
         )}
         <Text style={{ marginTop: 3, flex: 1, marginRight: 10 }}>
           {props.textContent}
@@ -89,13 +99,13 @@ const styles = StyleSheet.create({
   },
   img: {
     width: '100%',
-    height: '65%',
+    height: '100%',
     borderRadius: 15,
     resizeMode: 'stretch',
   },
   imgHorizontal: {
     width: deviceWidth * 0.4,
-    height: '90%',
+    height: '100%',
     borderRadius: 15,
     resizeMode: 'stretch',
     marginRight: 15,

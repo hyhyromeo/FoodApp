@@ -8,13 +8,19 @@ import {
   TouchableOpacity,
   Linking,
 } from 'react-native';
-import MapView, { Marker, Callout, PROVIDER_GOOGLE } from 'react-native-maps';
+import MapView, {
+  Marker,
+  Callout,
+  PROVIDER_GOOGLE,
+  CalloutSubview,
+} from 'react-native-maps';
 import * as Location from 'expo-location';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faLocationArrow } from '@fortawesome/free-solid-svg-icons/faLocationArrow';
+import { faDiamondTurnRight } from '@fortawesome/free-solid-svg-icons/faDiamondTurnRight';
+import { faPhoneFlip } from '@fortawesome/free-solid-svg-icons/faPhoneFlip';
 import { useContext } from 'react';
 import { ShopContext } from '../../context/ShopContext';
-
 const DefaultRegion = {
   latitude: 35.6762,
   longitude: 139.6503,
@@ -24,7 +30,8 @@ const DefaultRegion = {
 export default function Map(route) {
   const mapRef = useRef(null);
   const [currentRegion, setCurrentRegion] = useState(DefaultRegion);
-  const { shop } = useContext(ShopContext);
+  const { shop, theme } = useContext(ShopContext);
+
   const [allShopData, setAllShopData] = useState(shop);
   useEffect(() => {
     setCoords();
@@ -64,7 +71,7 @@ export default function Map(route) {
             latitude: route.route.params.Lat,
             longitude: route.route.params.Long,
           }}
-          pinColor="black"
+          pinColor="green"
         />
         {allShopData &&
           allShopData.map((item, key) => (
@@ -79,37 +86,95 @@ export default function Map(route) {
               <Callout tooltip>
                 <View key={item.id}>
                   <View style={styles.bubble}>
-                    <Text style={styles.name}>{item.name}</Text>
-                    <Text>{item.location}</Text>
-                    <Image style={styles.image} source={{ uri: item.image }} />
-                    <TouchableOpacity
-                      style={{
-                        margin: 20,
-                        backgroundColor: '#0782F9',
-                        width: '80%',
-                        padding: 15,
-                        borderRadius: 10,
-                        alignItems: 'center',
-                      }}
-                      onPress={() => {
-                        console.log('123123123');
-                        Linking.openURL(
-                          'https://www.google.com/maps/dir/?api=1&origin=&destination=22.30678960858985, 114.23265417290528'
-                        );
-                      }}
-                    >
-                      <Text
+                    <View style={{ flexDirection: 'row' }}>
+                      <View style={{ padding: 15 }}>
+                        <Text style={styles.name}>{item.name}</Text>
+                        <Text style={{ width: deviceWidth - 180 }}>
+                          {item.location}
+                        </Text>
+                        <Image
+                          style={styles.image}
+                          source={{ uri: item.image }}
+                        />
+                      </View>
+                      <View
                         style={{
-                          color: 'white',
-                          fontWeight: '700',
-                          fontSize: 16,
+                          flexDirection: 'column',
+                          height: '100%',
+                          // borderWidth: 1,
+                          paddingTop: 15,
+                          width: 90,
+                          justifyContent: 'center',
+                          alignItems: 'center',
                         }}
                       >
-                        Map Map
-                      </Text>
-                    </TouchableOpacity>
+                        <View
+                          style={{
+                            width: '100%',
+                            height: '40%',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            padding: 5,
+                          }}
+                        >
+                          <CalloutSubview
+                            style={{
+                              backgroundColor: theme,
+                              width: '100%',
+                              height: '100%',
+                              borderRadius: 10,
+                              justifyContent: 'center',
+                              alignItems: 'center',
+                            }}
+                            onPress={() => {
+                              Linking.openURL(`tel:${item.tel}`);
+                            }}
+                          >
+                            <FontAwesomeIcon
+                              style={{
+                                color: 'white',
+                              }}
+                              icon={faPhoneFlip}
+                              size={20}
+                            />
+                          </CalloutSubview>
+                        </View>
+                        <View
+                          style={{
+                            width: '100%',
+                            height: '40%',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            padding: 5,
+                          }}
+                        >
+                          <CalloutSubview
+                            style={{
+                              backgroundColor: theme,
+                              width: '100%',
+                              height: '100%',
+                              borderRadius: 10,
+                              justifyContent: 'center',
+                              alignItems: 'center',
+                            }}
+                            onPress={() => {
+                              Linking.openURL(
+                                `https://www.google.com/maps/dir/?api=1&origin=&destination=${item.name}&travelmode=walking`
+                              );
+                            }}
+                          >
+                            <FontAwesomeIcon
+                              style={{
+                                color: 'white',
+                              }}
+                              icon={faDiamondTurnRight}
+                              size={30}
+                            />
+                          </CalloutSubview>
+                        </View>
+                      </View>
+                    </View>
                   </View>
-
                   <View style={styles.arrowBorder} />
                   <View style={styles.arrow} />
                 </View>
@@ -174,8 +239,8 @@ const styles = StyleSheet.create({
     borderRadius: 6,
     borderColor: '#CCC',
     borderWidth: 0.5,
-    padding: 15,
-    width: deviceWidth - 150,
+    // padding: 15,
+    width: deviceWidth - 50,
   },
   name: {
     fontSize: 20,
@@ -202,5 +267,6 @@ const styles = StyleSheet.create({
     width: deviceWidth - 180,
     height: 100,
     resizeMode: 'cover',
+    marginTop: 10,
   },
 });

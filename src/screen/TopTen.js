@@ -1,5 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { StyleSheet, View, Text, Dimensions } from 'react-native';
+import {
+  StyleSheet,
+  ScrollView,
+  View,
+  Text,
+  Dimensions,
+  Image,
+} from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { DataTable } from 'react-native-paper';
 import { Modalize } from 'react-native-modalize';
@@ -8,7 +15,7 @@ import * as _ from 'lodash';
 import { useContext } from 'react';
 import { ShopContext } from '../../context/ShopContext';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { faStar } from '@fortawesome/free-solid-svg-icons';
+import { faStar, faAward } from '@fortawesome/free-solid-svg-icons';
 export default function TopTen() {
   const [selectedShop, setSelectedShop] = useState();
   const modalizeRef = useRef(null);
@@ -20,22 +27,8 @@ export default function TopTen() {
     modalizeRef.current?.open();
   };
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
       <DataTable>
-        <DataTable.Header>
-          <DataTable.Title style={styles.rank}>
-            <Text style={styles.title}>Rank</Text>
-          </DataTable.Title>
-          <DataTable.Title style={styles.name}>
-            <Text style={styles.title}>Name</Text>
-          </DataTable.Title>
-          <DataTable.Title style={styles.cat_and_rating}>
-            <Text style={styles.title}>Category</Text>
-          </DataTable.Title>
-          <DataTable.Title style={styles.cat_and_rating}>
-            <Text style={styles.title}>Rating</Text>
-          </DataTable.Title>
-        </DataTable.Header>
         {allShopData &&
           _.take(
             allShopData.sort((a, b) => b.rating - a.rating),
@@ -47,10 +40,85 @@ export default function TopTen() {
                 onOpen(item);
               }}
             >
-              <DataTable.Row>
-                <DataTable.Cell style={styles.rank}>{key + 1}</DataTable.Cell>
+              <DataTable.Row style={{ height: 100 }}>
+                <View
+                  style={{
+                    position: 'absolute',
+                    top: 5,
+                    left: -15,
+                    zIndex: 1,
+                    // shadowColor: 'rgba(0,0,0, .4)',
+                    // shadowOffset: { height: 1, width: 1 },
+                    // shadowOpacity: 1.5,
+                    // shadowRadius: 3.5,
+                  }}
+                >
+                  <FontAwesomeIcon
+                    style={{
+                      color: 'lightblue',
+                      shadowColor: 'rgba(0,0,0, .4)',
+                      shadowOffset: { height: 1, width: 1 },
+                      shadowOpacity: 1.5,
+                      shadowRadius: 3.5,
+                    }}
+                    icon={faAward}
+                    size={40}
+                  />
+                  <Text
+                    style={{
+                      position: 'absolute',
+                      top: 8,
+                      left: 11,
+                      backgroundColor: 'white',
+                      fontWeight: 'bold',
+                      width: 18,
+                      height: 14,
+                      textAlign: 'center',
+                      shadowColor: 'rgba(0,0,0, .4)',
+                      shadowOffset: { height: 1, width: 1 },
+                      shadowOpacity: 1.5,
+                      shadowRadius: 3.5,
+                    }}
+                  >
+                    {key + 1}
+                  </Text>
+                </View>
+                <DataTable.Cell
+                  style={{
+                    flex: 3,
+                    paddingTop: 10,
+                    justifyContent: 'flex-end',
+                    position: 'relative',
+                  }}
+                >
+                  <View
+                    style={{
+                      shadowColor: 'rgba(0,0,0, .4)',
+                      shadowOffset: { height: 1, width: 1 },
+                      shadowOpacity: 1.5,
+                      shadowRadius: 3.5,
+                      borderRadius: 15,
+                    }}
+                  >
+                    <Image
+                      source={{ uri: item.image }}
+                      style={{
+                        height: 70,
+                        width: 140,
+                        resizeMode: 'stretch',
+                        borderRadius: 8,
+                      }}
+                    />
+                  </View>
+                </DataTable.Cell>
                 <DataTable.Cell style={styles.cell_name}>
-                  {item.name}
+                  <Text
+                    style={{
+                      fontSize: 18,
+                    }}
+                  >
+                    {item.name}
+                  </Text>
                 </DataTable.Cell>
                 <DataTable.Cell style={styles.cat_and_rating}>
                   {item.tag}
@@ -76,14 +144,10 @@ export default function TopTen() {
             </TouchableOpacity>
           ))}
       </DataTable>
-      <Modalize
-        modalHeight={deviceHeight * 0.78}
-        snapPoint={deviceHeight * 0.78}
-        ref={modalizeRef}
-      >
+      <Modalize modalHeight={deviceHeight - 100} ref={modalizeRef}>
         <TopTenCard shop={selectedShop} />
       </Modalize>
-    </View>
+    </ScrollView>
   );
 }
 
@@ -94,22 +158,10 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#F9F9F9',
-    alignItems: 'center',
-  },
-  title: {
-    fontWeight: 'bold',
-    fontSize: 15,
-  },
-  rank: {
-    flex: 1,
-    justifyContent: 'center',
-  },
-  name: {
-    flex: 3,
-    paddingLeft: 10,
+    scrollBehavior: 'smooth',
   },
   cat_and_rating: {
-    justifyContent: 'center',
+    flex: 1,
   },
   cell_name: {
     flex: 3,

@@ -76,8 +76,8 @@ const Home = ({ navigation }) => {
       <StatusBar style="auto" />
       <View
         style={{
-          flex: 1,
           paddingHorizontal: 20,
+          height: 50,
           width: deviceWidth,
           justifyContent: 'space-between',
           alignItems: 'center',
@@ -88,7 +88,7 @@ const Home = ({ navigation }) => {
         <TouchableOpacity
           style={{
             backgroundColor: '#0782F9',
-            width: '25%',
+            width: '23%',
             padding: 15,
             borderRadius: 10,
             alignItems: 'center',
@@ -107,7 +107,7 @@ const Home = ({ navigation }) => {
           showsHorizontalScrollIndicator={false}
           pagingEnabled
           horizontal
-          style={styles.wrapper}
+          style={styles.innerWrapper}
         >
           {banner.length > 1 &&
             banner.map((e, index) => (
@@ -196,6 +196,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   wrapper: {
+    width: deviceWidth,
+    height: deviceHeight * 0.3,
+  },
+  innerWrapper: {
     width: deviceWidth,
     height: deviceHeight * 0.35,
   },

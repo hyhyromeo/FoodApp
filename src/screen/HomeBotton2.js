@@ -18,7 +18,7 @@ const HomeButton2 = ({ navigation }) => {
       >
         <View style={{ flex: 2, padding: 6 }}>
           <FontAwesomeIcon
-            style={{ color: 'lightblue' }}
+            style={styles.fontIcon}
             icon={faUtensils}
             size={50}
           />
@@ -40,7 +40,7 @@ const HomeButton2 = ({ navigation }) => {
       >
         <View style={{ flex: 2, marginLeft: 10, padding: 6 }}>
           <FontAwesomeIcon
-            style={{ color: 'lightblue' }}
+            style={styles.fontIcon}
             icon={faFileSignature}
             size={50}
           />
@@ -84,6 +84,13 @@ const styles = StyleSheet.create({
     shadowOpacity: 1.5,
     shadowRadius: 3.5,
     backgroundColor: '#fff',
+  },
+  fontIcon: {
+    color: 'lightblue',
+    shadowColor: 'rgba(0,0,0, .4)',
+    shadowOffset: { height: 1, width: 1 },
+    shadowOpacity: 1.5,
+    shadowRadius: 1.5,
   },
 });
 

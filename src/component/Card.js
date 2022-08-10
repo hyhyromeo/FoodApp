@@ -26,7 +26,6 @@ const Card = ({ info }) => {
           style={{
             position: 'absolute',
             right: 0,
-            // justifyContent: 'flex-end',
             alignItems: 'center',
             flexDirection: 'row',
           }}
@@ -42,31 +41,6 @@ const Card = ({ info }) => {
         </View>
         <Text style={styles.tagStyle}>{info.tag}</Text>
         <IconLabel location={info.location} />
-        <TouchableOpacity
-          style={{
-            backgroundColor: '#0782F9',
-            width: '20%',
-            padding: 15,
-            borderRadius: 10,
-            alignItems: 'center',
-          }}
-          onPress={() => {
-            console.log('123123123');
-            Linking.openURL(
-              `https://www.google.com/maps/dir/?api=1&origin=&destination=${info.lat}, ${info.long}`
-            );
-          }}
-        >
-          <Text
-            style={{
-              color: 'white',
-              fontWeight: '700',
-              fontSize: 16,
-            }}
-          >
-            Map Map
-          </Text>
-        </TouchableOpacity>
       </View>
     </View>
   );
